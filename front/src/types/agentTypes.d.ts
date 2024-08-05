@@ -1,6 +1,6 @@
 interface IAgentTaget {
   id: number | null
-  agent: IUser | null
+  agent: IUser | null | string
   month: string
   year: string | null
   currentValue: number | null
@@ -12,7 +12,7 @@ type objectiveTypes = 'visit' | 'task' | 'mix'
 
 interface IAgentObjective {
   id?: number
-  agent: IUser
+  agent: IUser | string
   client?: IUser | null
   isCompleted: boolean
   completedAt: strin
@@ -37,7 +37,7 @@ interface IAgentProfile {
   totalPriceYear: number
   averageBasket: number
   totalClients: number
-
+  monthlyTotals: IMonthlyTotals[]
   totalPriceDay: number
   totalDayCount: number
   totalMonthCount: number
@@ -46,33 +46,10 @@ interface IAgentProfile {
   targetPrecent: number
 }
 
-//MERGE VISIT WITH OBJECTIVE the same
-// interface IAgnetVisit {
-//   id: number;
-//   completed: boolean;
-//   completedDate: null | string;
-//   description: null | string;
-//   week1: boolean;
-//   week2: boolean;
-//   week3: boolean;
-//   week4: boolean;
-//   choosedDay: string;
-//   hourFrom: string;
-//   hourTo: string;
-//   agentId: string;
-//   clientName: string;
-//   clientCompany: null | string;
-//   clientCode: null | string;
-//   clientContact: string;
-//   clientBusinessId: null | string;
-//   clientAddress: string;
-//   clientStatus: null | string;
-//   clientPaymentMethod: null | string;
-//   clientCreationDate: null | string;
-//   clientEmail: null | string;
-//   date: string;
-//   unpublished: boolean;
-// }
+interface IMonthlyTotals {
+  month: number
+  total: number
+}
 
 interface IPerformanceInfo {
   totalOrderSum: number
@@ -107,16 +84,6 @@ interface IAgentTask {
   completedDate: string | null
   completed: boolean
 }
-
-// interface IObjective {
-//   id: number
-//   hourFrom: number
-//   hourTo: number
-//   compleated: boolean
-//   compleatedDate: string
-//   description: string
-//   agent: IUser
-// }
 
 interface ITodayObjectives {
   visitsTotal: number

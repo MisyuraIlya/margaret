@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Container, Fab, Grid } from '@mui/material'
 import { Tab, Tabs } from '../utils/tabs'
 import Utils from '../utils'
 import Agent from '../components/Agent'
 import AddIcon from '@mui/icons-material/Add'
+import Modals from '../components/Modals'
 
 const AgentDashboard = () => {
+  const [openVisitModal, setOpenVisiModal] = useState(false)
+  const [openMission, setOpenMission] = useState(false)
+
   const components = [
     {
       title: 'דאשבורד',
@@ -35,6 +39,7 @@ const AgentDashboard = () => {
               width: '80px',
               height: '80px',
             }}
+            onClick={() => setOpenMission(true)}
           >
             <AddIcon style={{ fontSize: '50px' }} />
           </Fab>
@@ -46,6 +51,21 @@ const AgentDashboard = () => {
       component: (
         <>
           <Agent.Visits.List />
+          <Fab
+            color="primary"
+            aria-label="add"
+            sx={{
+              position: 'fixed',
+              right: '50px',
+              bottom: '50px',
+              borderRadius: '5px',
+              width: '80px',
+              height: '80px',
+            }}
+            onClick={() => setOpenVisiModal(true)}
+          >
+            <AddIcon style={{ fontSize: '50px' }} />
+          </Fab>
         </>
       ),
     },
@@ -53,8 +73,8 @@ const AgentDashboard = () => {
       title: 'יעדים',
       component: (
         <>
-          <Agent.Targets.Filter />
-          {/* <Agent.Targets.List /> */}
+          {/* <Agent.Targets.Filter /> */}
+          <Agent.Targets.List />
         </>
       ),
     },
@@ -79,6 +99,14 @@ const AgentDashboard = () => {
           </Tabs>
         </Grid>
       </Grid>
+      <Modals.Agent.Visit.Handler
+        open={openVisitModal}
+        setOpen={setOpenVisiModal}
+      />
+      <Modals.Agent.Mission.Create
+        open={openMission}
+        setOpen={setOpenMission}
+      />
     </Container>
   )
 }

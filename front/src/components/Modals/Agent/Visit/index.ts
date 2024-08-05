@@ -1,5 +1,5 @@
-import Create from './Create'
+import Handler from './Handler'
 
 export default {
-  Create: Create,
+  Handler: Handler,
 }

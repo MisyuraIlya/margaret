@@ -54,7 +54,7 @@ const Update = ({
 
   return (
     <>
-      <ModalWrapper active={open} setActive={setOpen} width={25} height={45}>
+      <ModalWrapper active={open} setActive={setOpen} width={25} height={'45%'}>
         {item?.subTusk?.length ? (
           <Box>
             <Typography

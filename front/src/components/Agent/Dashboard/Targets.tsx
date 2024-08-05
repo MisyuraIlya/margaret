@@ -25,12 +25,14 @@ const Targets = () => {
     },
   ]
   const { data } = hooks.agent.useDataAgentTargets(year)
-  const sales: IMonthAgenthSale[] = MONTH_HEBREW_1.map((item) => {
+  const { findTarget } = hooks.agent.useDataAgentProfile()
+
+  const sales: IMonthAgenthSale[] = MONTH_HEBREW_1.map((item, key) => {
     const matchingData = data?.['hydra:member']?.find(
       (res) => item.name === res.month
     )
     return {
-      y: matchingData ? matchingData.currentValue ?? 0 : 0,
+      y: findTarget(key + 1),
       x: matchingData ? matchingData.month : '',
       goals: [
         {
@@ -41,6 +43,8 @@ const Targets = () => {
       ],
     }
   })
+  console.log('sales', sales)
+
   const seriesDesktop = [
     {
       name: 'מכירות',
@@ -113,7 +117,7 @@ const Targets = () => {
     <Card sx={{ margin: '50px 0', padding: '0 50px' }}>
       <Typography variant="h6">עמידה ביעדים</Typography>
 
-      <Select
+      {/* <Select
         value={year}
         sx={{ height: '40px', minWidth: '150px' }}
         onChange={(e) => setYear(e.target.value)}
@@ -123,7 +127,7 @@ const Targets = () => {
             {item.value}
           </MenuItem>
         ))}
-      </Select>
+      </Select> */}
       {window.innerWidth > 1050 ? (
         <>
           <ReactApexChart

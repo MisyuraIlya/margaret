@@ -35,6 +35,7 @@ const useDataAgentDashboard = (weekFrom: string, weekTo: string) => {
 
   const updateObjective = async (obj: IAgentObjective) => {
     try {
+      obj.agent = `/api/users/${id}`
       await services.Agents.agentProfileService.updateAgentObjective(obj)
     } catch (e) {
       console.log('[ERROR] error', e)

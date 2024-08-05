@@ -26,7 +26,7 @@ const Daily = () => {
   const completedTasks = tasks?.filter((item) => item.completedAt).length
   const precentObj =
     totalTasks && completedTasks ? (completedTasks / totalTasks) * 100 : 0
-  const series2 = [precentVisits]
+  const series2 = [precentVisits.toFixed(2)]
   const options2 = {
     chart: {
       height: 350,
@@ -43,7 +43,7 @@ const Daily = () => {
     colors: ['#24426b'],
   }
 
-  const series1 = [precentObj]
+  const series1 = [precentObj.toFixed(2)]
   const options1 = {
     chart: {
       height: 350,

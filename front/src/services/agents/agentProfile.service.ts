@@ -48,12 +48,6 @@ export const agentProfileService = {
   async createAgentObjective(
     object: IAgentObjective
   ): Promise<IAgentObjective> {
-    console.log('object', object)
-    if (object.agent) {
-      // @ts-ignore
-      object.agent = `/api/users/${object.agent.id}`
-    }
-
     if (object.client) {
       // @ts-ignore
       object.client = `/api/users/${object.client.id}`
@@ -67,8 +61,6 @@ export const agentProfileService = {
   async updateAgentObjective(
     object: IAgentObjective
   ): Promise<IAgentObjective> {
-    // @ts-ignore
-    object.agent = `/api/users/${object?.agent?.id ?? object.agent}`
     if (object?.client) {
       // @ts-ignore
       object.client = `/api/users/${object?.client?.id ?? object.client}`
@@ -102,8 +94,6 @@ export const agentProfileService = {
     return response.data
   },
   async createAgentTarget(object: IAgentTaget): Promise<IAgentTaget> {
-    // @ts-ignore
-    object.agent = `/api/users/${object.agent.id}`
     const response = await axios.post(
       `${process.env.REACT_APP_API}/api/agent_targets`,
       object
@@ -111,8 +101,6 @@ export const agentProfileService = {
     return response.data
   },
   async updateAgentTarget(object: IAgentTaget): Promise<IAgentTaget> {
-    // @ts-ignore
-    object.agent = `/api/users/${object.agent.id}`
     const response = await axios.patch(
       `${process.env.REACT_APP_API}/api/agent_targets/${object.id}`,
       object,

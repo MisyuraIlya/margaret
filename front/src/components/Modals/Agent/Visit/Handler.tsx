@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useAuth } from '../../../../store/auth.store'
-import ModalWrapper from '../../../../components/Modals/ModalWrapper'
+import ModalWrapper from '../../ModalWrapper'
 import {
   Box,
   Button,
@@ -33,7 +33,7 @@ type EditAndCreateVisitForm = {
   hourTo: string
 }
 
-const Create = ({
+const Handler = ({
   item,
   open,
   setOpen,
@@ -124,7 +124,7 @@ const Create = ({
       active={open}
       setActive={setOpen}
       width={isMobile ? 80 : 20}
-      height={isMobile ? 70 : 55}
+      height={isMobile ? '70%' : '65%'}
     >
       <form className="centered" onSubmit={handleSubmit(handleClick)}>
         <Box>
@@ -295,4 +295,4 @@ const Create = ({
   )
 }
 
-export default Create
+export default Handler

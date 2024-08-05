@@ -804,8 +804,11 @@ class Priority implements ErpInterface
     public function GetAgentStatistic(string $agentId): AgentStatisticDto
     {
         $endpoint = "/ORDERS";
+        $currentYear = new \DateTimeImmutable();
+        $dateFrom = $currentYear->setDate($currentYear->format('Y'), 1, 1)->setTime(0, 0, 0, 0)->format('Y-m-d\TH:i:s.u\Z');
+        $dateTo = $currentYear->setDate($currentYear->format('Y'), 12, 31)->setTime(23, 59, 59, 999999)->format('Y-m-d\TH:i:s.u\Z');
         $queryParameters = [
-            '$filter' => "AGENTCODE eq '$agentId'",
+            '$filter' => "AGENTCODE eq '$agentId' and CURDATE ge $dateFrom and CURDATE le $dateTo",
             '$select' => "QPRICE,CURDATE"
         ];
         $queryString = http_build_query($queryParameters);
@@ -813,6 +816,7 @@ class Priority implements ErpInterface
         $response = $this->GetRequest($urlQuery);
         $currentDay = (new \DateTime())->format('Y-m-d');
         $currentMonth = (new \DateTime())->format('Y-m');
+
         $result = new AgentStatisticDto();
         $result->total = 0;
         $result->averageTotalBasket = 0;
@@ -821,9 +825,21 @@ class Priority implements ErpInterface
         $result->totalOrdersToday = 0;
         $result->totalOrdersMonth = 0;
         $totalBaskets = 0;
-        foreach ($response as $item){
+        $monthlyTotals = [];
+        foreach ($response as $item) {
             $result->total += (float)$item['QPRICE'];
             $totalBaskets++;
+            $date = new \DateTime($item['CURDATE']);
+            $month = $date->format('n');
+            $year = $date->format('Y');
+
+            $key = $year . '-' . str_pad($month, 2, '0', STR_PAD_LEFT);
+
+            if (!isset($monthlyTotals[$key])) {
+                $monthlyTotals[$key] = 0;
+            }
+
+            $monthlyTotals[$key] += (float)$item['QPRICE'];
 
             if (substr($item['CURDATE'], 0, 10) === $currentDay) {
                 $result->totalPriceToday += (float)$item['QPRICE'];
@@ -836,6 +852,13 @@ class Priority implements ErpInterface
             }
         }
         $result->averageTotalBasket = $totalBaskets > 0 ? $result->total / $totalBaskets : 0;
+        $monthlyTotalsArray = [];
+        foreach ($monthlyTotals as $key => $total) {
+            list($year, $month) = explode('-', $key);
+            $monthlyTotalsArray[] = ['month' => (int)$month, 'total' => round($total, 2)];
+        }
+        $result->monthlyTotals = $monthlyTotalsArray;
+
         return $result;
     }
 

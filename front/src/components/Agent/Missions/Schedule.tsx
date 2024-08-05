@@ -9,7 +9,7 @@ import { useMobile } from '../../../provider/MobileProvider'
 import './MyScheduleCalendar.styles.scss'
 import MySheduleCalendarItem from './MySheduleCalendarItem'
 import hooks from '../../../hooks'
-
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 const Schedule = () => {
   const { daysOfWeek, hoursOfDay, weekFrom, weekTo, loading } =
     useMyScheduleCalendar()
@@ -21,7 +21,7 @@ const Schedule = () => {
         <div className="weekly-scheduler myMarginBottom">
           <div className="header">
             <div className="cell img_time">
-              <span className="material-symbols-outlined">schedule</span>
+              <CalendarMonthIcon />
             </div>
             {daysOfWeek.map((day, index) => (
               <div key={day} className="cell day">

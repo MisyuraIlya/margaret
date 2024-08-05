@@ -17,9 +17,15 @@ const useDataAgentProfile = () => {
     fetchDataProfile(id!)
   )
 
+  const findTarget = (numberMonth: number) => {
+    const find = data?.monthlyTotals?.find((item) => item.month === numberMonth)
+    return find?.total ?? 0
+  }
+
   return {
     data,
     isLoading,
+    findTarget,
   }
 }
 

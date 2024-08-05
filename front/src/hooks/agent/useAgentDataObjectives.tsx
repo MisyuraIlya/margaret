@@ -35,6 +35,8 @@ const useDataAgentObjectives = (objective: objectiveTypes) => {
 
   const createVisit = async (obj: IAgentObjective) => {
     try {
+      // @ts-ignore
+      obj.agent = `/api/users/${id}`
       await services.Agents.agentProfileService.createAgentObjective(obj)
     } catch (e) {
       console.log('[ERROR] error', e)
@@ -45,6 +47,8 @@ const useDataAgentObjectives = (objective: objectiveTypes) => {
 
   const updateVisit = async (obj: IAgentObjective) => {
     try {
+      // @ts-ignore
+      obj.agent = `/api/users/${id}`
       await services.Agents.agentProfileService.updateAgentObjective(obj)
     } catch (e) {
       console.log('[ERROR] error', e)

@@ -12,7 +12,6 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import { numberWithCommas } from '../../../helpers/numberWithCommas'
 import Modals from '../../Modals'
 import { useAuth } from '../../../store/auth.store'
-import SupportAgentIcon from '@mui/icons-material/SupportAgent'
 import DateRangeIcon from '@mui/icons-material/DateRange'
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange'
 import { themeColors } from '../../../styles/mui'
@@ -64,9 +63,11 @@ const Card: FC<TargetItemProps> = ({ item, index }) => {
   const handle = () => {
     if (item.id) {
       item.targetValue = number
+      item.currentValue = 0
       updateTarget(item)
     } else {
       item.targetValue = number
+      item.currentValue = 0
       createTarget(item)
     }
     onSuccessAlert('יעד עודכן בהצלחה', '')
@@ -128,27 +129,17 @@ const Card: FC<TargetItemProps> = ({ item, index }) => {
         active={open}
         setActive={setOpen}
         width={28}
-        height={40}
+        height={'30%'}
       >
-        <Box>
-          <Typography variant="h5">עדכון יעד</Typography>
-          <Box sx={{ display: 'flex', gap: '20px', margin: '20px 0' }}>
+        <Box sx={{ padding: '0 20px' }}>
+          <Typography variant="h5" sx={{ mb: '20px' }}>
+            עדכון יעד
+          </Typography>
+          <Box sx={{ display: 'flex', gap: '20px' }}>
             <TextField
               variant="outlined"
-              sx={{ border: '1px solid #d6e0ed', borderRadius: '20px' }}
-              value={user?.name}
-              InputProps={{
-                startAdornment: (
-                  <Box sx={{ padding: '0 10px' }}>
-                    <SupportAgentIcon />
-                  </Box>
-                ),
-              }}
-            />
-            <TextField
-              variant="outlined"
-              sx={{ border: '1px solid #d6e0ed', borderRadius: '20px' }}
               value={item.month + ' ' + item.year}
+              disabled
               InputProps={{
                 startAdornment: (
                   <Box sx={{ padding: '0 10px' }}>
@@ -157,10 +148,7 @@ const Card: FC<TargetItemProps> = ({ item, index }) => {
                 ),
               }}
             />
-          </Box>
-          <Box sx={{ display: 'flex', gap: '20px', margin: '20px 0' }}>
             <TextField
-              sx={{ border: '1px solid #d6e0ed', borderRadius: '20px' }}
               variant="outlined"
               type="number"
               placeholder="יעד"
@@ -175,18 +163,8 @@ const Card: FC<TargetItemProps> = ({ item, index }) => {
               }}
             />
           </Box>
-          <Box>
-            <Button
-              variant="contained"
-              sx={{
-                fontSize: '18px',
-                position: 'absolute',
-                bottom: '30px',
-                right: '50px',
-                borderRadius: '20px',
-              }}
-              onClick={() => handle()}
-            >
+          <Box sx={{ display: 'flex', justifyContent: 'end', mt: '40px' }}>
+            <Button variant="contained" onClick={() => handle()}>
               עדכן יעד
             </Button>
           </Box>

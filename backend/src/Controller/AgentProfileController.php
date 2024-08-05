@@ -32,6 +32,7 @@ class AgentProfileController extends AbstractController
             "totalPriceYear" => $response->total,
             "averageBasket"  => $response->averageTotalBasket,
             "totalClients" => $coundUsers,
+            "monthlyTotals" => $response->monthlyTotals,
 
             "totalPriceDay" => $response->totalPriceToday,
             "totalDayCount" => $response->totalOrdersToday,

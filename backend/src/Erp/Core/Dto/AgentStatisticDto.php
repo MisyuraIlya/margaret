@@ -12,4 +12,6 @@ class AgentStatisticDto
 
     public float $totalOrdersMonth;
 
+    public array $monthlyTotals;
+
 }

@@ -85,7 +85,7 @@ const Card: FC<VisitItem> = ({ item, index }) => {
           </Grid>
         </Grid>
       </MuiCard>
-      <Modals.Agent.Visit.Create open={open} setOpen={setOpen} item={item} />
+      <Modals.Agent.Visit.Handler open={open} setOpen={setOpen} item={item} />
     </>
   )
 }

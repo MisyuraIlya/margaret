@@ -23,6 +23,7 @@ const useDataAgentTargets = (year: string) => {
 
   const createTarget = async (obj: IAgentTaget) => {
     try {
+      obj.agent = `/api/users/${id}`
       await services.Agents.agentProfileService.createAgentTarget(obj)
     } catch (e) {
       console.log('[ERROR] error', e)
@@ -33,6 +34,7 @@ const useDataAgentTargets = (year: string) => {
 
   const updateTarget = async (obj: IAgentTaget) => {
     try {
+      obj.agent = `/api/users/${id}`
       await services.Agents.agentProfileService.updateAgentTarget(obj)
     } catch (e) {
       console.log('[ERROR] error', e)

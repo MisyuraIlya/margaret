@@ -5,12 +5,15 @@ import { Box, Card as MuiCard, Grid, Typography } from '@mui/material'
 import { MONTH_HEBREW_1 } from '../../../helpers/arrayOfMonths'
 import Card from './Card'
 import hooks from '../../../hooks'
+import { useAgentStore } from '../../../store/agent.store'
 
-const List = ({ year }: { year: string }) => {
+const List = () => {
   const { user } = useAuth()
+  const { year } = useAgentStore()
   const { data, isLoading } = hooks.agent.useDataAgentTargets(year)
+  const { findTarget } = hooks.agent.useDataAgentProfile()
 
-  const targets: IAgentTaget[] = MONTH_HEBREW_1.map((item) => {
+  const targets: IAgentTaget[] = MONTH_HEBREW_1.map((item, key) => {
     const matchingData = data?.['hydra:member']?.find(
       (res) => item.name === res.month
     )
@@ -19,12 +22,11 @@ const List = ({ year }: { year: string }) => {
       agent: user,
       month: item.name,
       year: year,
-      currentValue: matchingData ? matchingData.currentValue : 0,
+      currentValue: findTarget(key + 1),
       targetValue: matchingData ? matchingData.targetValue : 0,
       isCompleted: matchingData ? matchingData.isCompleted : false,
     }
   })
-
   return (
     <MuiCard sx={{ marginTop: '50px' }}>
       <Grid container spacing={2} sx={{ margin: '5px', padding: '10px 20px' }}>
