@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Cron\Core\GetAgents;
 use App\Cron\Core\GetCategories;
 use App\Cron\Core\GetMainAttributes;
 use App\Cron\Core\GetMigvans;
@@ -41,6 +42,7 @@ class CronManagerCommand extends Command
 
     public function __construct(
         private readonly GetUsers $users,
+        private readonly GetAgents $agents,
         private readonly GetCategories $categories,
         private readonly GetProducts $products,
         private readonly GetPriceList $priceList,
@@ -219,15 +221,17 @@ class CronManagerCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $this->Initialization();
+//        $this->agents->sync();
+
+//        $this->Initialization();
 //        $this->priceList->sync();
-//        $this->users->sync();
+        $this->users->sync();
 //        $this->priceListUser->sync();
 //
 //        $this->categories->sync();
-        $this->products->sync();
+//        $this->products->sync();
 //        $this->priceListDetailed->sync();
-//        $this->packs->sync();
+//        $this->packs->sync();;
 //        $this->productPacks->sync();
 //        $this->stocks->sync();
 //        $this->mainAttributes->sync();
@@ -235,6 +239,7 @@ class CronManagerCommand extends Command
 //        if(!$this->isOnlineMigvan && $this->isUsedMigvan){
 //            $this->migvans->sync();
 //        }
+
         $io->success('All Cron Function Executed');
         return Command::SUCCESS;
     }

@@ -5,6 +5,7 @@ namespace App\Erp\Core;
 use App\Entity\History;
 use App\Entity\User;
 use App\Enum\DocumentsType;
+use App\Erp\Core\Dto\AgentStatisticDto;
 use App\Erp\Core\Dto\CartessetDto;
 use App\Erp\Core\Dto\CategoriesDto;
 use App\Erp\Core\Dto\DocumentItemsDto;
@@ -54,5 +55,9 @@ interface ErpInterface
     public function GetStocks(): StocksDto;
     public function GetPackMain(): PacksMainDto;
     public function GetPackProducts(): PacksProductDto;
+
+    public function GetAgents(): UsersDto;
+
+    public function GetAgentStatistic(string $agentId): AgentStatisticDto;
 
 }

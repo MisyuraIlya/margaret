@@ -56,10 +56,10 @@ class GetCategories
             if (!empty($response->products)) {
                 foreach ($response->products as $key => $itemRec) {
                     assert($itemRec instanceof  ProductDto);
-                    if($itemRec->categoryLvl1Name && $itemRec->categoryLvl2Name && $itemRec->categoryLvl3Name){
+                    if($itemRec->categoryLvl1Name && $itemRec->categoryLvl2Name){
                         $lvl1 = $this->HandleLvl1($itemRec->categoryLvl1Id,$itemRec->categoryLvl1Name);
                         $lvl2 = $this->HandleWithParent($itemRec->categoryLvl2Id, $itemRec->categoryLvl2Name,$lvl1,2);
-                        $this->HandleWithParent($itemRec->categoryLvl3Id, $itemRec->categoryLvl3Name,$lvl2,3);
+//                        $this->HandleWithParent($itemRec->categoryLvl3Id, $itemRec->categoryLvl3Name,$lvl2,3);
                     }
                 }
                 $skip += $pageSize;

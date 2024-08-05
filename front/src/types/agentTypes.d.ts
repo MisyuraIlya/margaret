@@ -40,6 +40,7 @@ interface IAgentProfile {
 
   totalPriceDay: number
   totalDayCount: number
+  totalMonthCount: number
 
   totalMissions: number
   targetPrecent: number

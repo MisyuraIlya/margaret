@@ -6,6 +6,7 @@ use App\Entity\History;
 use App\Entity\HistoryDetailed;
 use App\Entity\User;
 use App\Enum\DocumentsType;
+use App\Erp\Core\Dto\AgentStatisticDto;
 use App\Erp\Core\Dto\CartessetDto;
 use App\Erp\Core\Dto\CartessetLineDto;
 use App\Erp\Core\Dto\CategoriesDto;
@@ -373,13 +374,15 @@ class Priority implements ErpInterface
         $endpoint = "/LOGPART";
         if($pageSize) {
             $queryExtras = [
-                '$select' => "MINPRICE,PARTNAME,PARTDES,BARCODE,CONV,FAMILYNAME,FAMILYDES,SPEC9,SPEC10,STATDES,BASEPLPRICE,SPEC2,SPEC3,SPEC4,SPEC5,SPEC6,SPEC7,SPEC8",
+                '$select' => "MINPRICE,PARTNAME,PARTDES,BARCODE,CONV,FAMILYNAME,FAMILYDES,SPEC9,SPEC10,STATDES,BASEPLPRICE,SPEC2,SPEC3,SPEC4,SPEC5,SPEC6,SPEC7,SPEC8,SPEC19,QAMT_PARTSPEC21",
                 '$top' => $pageSize,
                 '$skip' => $skip,
+                '$filter' => "SHOWINWEB eq 'Y'"
             ];
         } else {
             $queryExtras = [
-                '$select' => "MINPRICE,PARTNAME,PARTDES,BARCODE,CONV,FAMILYNAME,FAMILYDES,SPEC9,SPEC10,STATDES,BASEPLPRICE,SPEC2,SPEC3,SPEC4,SPEC5,SPEC6,SPEC7,SPEC8",
+                '$select' => "MINPRICE,PARTNAME,PARTDES,BARCODE,CONV,FAMILYNAME,FAMILYDES,SPEC9,SPEC10,STATDES,BASEPLPRICE,SPEC2,SPEC3,SPEC4,SPEC5,SPEC6,SPEC7,SPEC8,SPEC19,QAMT_PARTSPEC21",
+                '$filter' => "SHOWINWEB eq 'Y'"
             ];
         }
 
@@ -391,15 +394,15 @@ class Priority implements ErpInterface
         foreach ($response as $itemRec){
             $dto = new ProductDto();
             $dto->sku = $itemRec['PARTNAME'];
-            $dto->title = $itemRec['PARTDES'];
+            $dto->title = $itemRec['QAMT_PARTSPEC21'];
             $dto->barcode = $itemRec['BARCODE'];
             $dto->packQuantity = $itemRec['CONV'];
             $dto->categoryLvl1Id = $itemRec[$this->ErpCategoryLvl1];
             $dto->categoryLvl1Name = $itemRec[$this->ErpCategoryLvl1 == 'FAMILYNAME' ? 'FAMILYDES' : $this->ErpCategoryLvl1];
             $dto->categoryLvl2Id = $itemRec[$this->ErpCategoryLvl2];
             $dto->categoryLvl2Name = $itemRec[$this->ErpCategoryLvl2];
-            $dto->categoryLvl3Id = $itemRec[$this->ErpCategoryLvl3];
-            $dto->categoryLvl3Name = $itemRec[$this->ErpCategoryLvl3];
+//            $dto->categoryLvl3Id = $itemRec[$this->ErpCategoryLvl3];
+//            $dto->categoryLvl3Name = $itemRec[$this->ErpCategoryLvl3];
             $dto->status = $itemRec['STATDES'] === 'פעיל' ? true : false;
             $dto->baseprice = $itemRec['BASEPLPRICE'];
             $dto->minimumPrice = $itemRec['MINPRICE'];
@@ -456,6 +459,7 @@ class Priority implements ErpInterface
             $userDto->maxCredit = $userRec['MAX_CREDIT'];
             $userDto->maxObligo = $userRec['MAX_OBLIGO'];
             $userDto->taxCode = $userRec['TAXCODE'];
+            $userDto->agentCode = $userRec['AGENTCODE'];
             $userDto->subUsers = [];
 
             foreach ($userRec['CUSTPERSONNEL_SUBFORM'] as $subRec) {
@@ -471,6 +475,7 @@ class Priority implements ErpInterface
                 $subUsers->maxCredit = $userRec['MAX_CREDIT'];
                 $subUsers->maxObligo = $userRec['MAX_OBLIGO'];
                 $subUsers->taxCode = $userRec['TAXCODE'];
+                $subUsers->agentCode = $userRec['AGENTCODE'];
                 $userDto->subUsers[] = $subUsers;
 
             }
@@ -747,7 +752,6 @@ class Priority implements ErpInterface
         }
         return $result;
     }
-
     public function GetProductImage(string $sku)
     {
         $endpoint = "/LOGPART";
@@ -779,6 +783,60 @@ class Priority implements ErpInterface
         }
 
 
+    }
+
+    public function GetAgents(): UsersDto
+    {
+        $response = $this->GetRequest('/AGENTS');
+        $usersDto = new UsersDto();
+
+        foreach ($response as $userRec) {
+            $user = new UserDto();
+            $user->userExId = $userRec['AGENTCODE'];
+            $user->name = $userRec['AGENTNAME'];
+            $user->phone = $userRec['CELLPHONE'];
+            $usersDto->users[] = $user;
+        }
+
+        return $usersDto;
+    }
+
+    public function GetAgentStatistic(string $agentId): AgentStatisticDto
+    {
+        $endpoint = "/ORDERS";
+        $queryParameters = [
+            '$filter' => "AGENTCODE eq '$agentId'",
+            '$select' => "QPRICE,CURDATE"
+        ];
+        $queryString = http_build_query($queryParameters);
+        $urlQuery = $endpoint . '?' . $queryString;
+        $response = $this->GetRequest($urlQuery);
+        $currentDay = (new \DateTime())->format('Y-m-d');
+        $currentMonth = (new \DateTime())->format('Y-m');
+        $result = new AgentStatisticDto();
+        $result->total = 0;
+        $result->averageTotalBasket = 0;
+        $result->totalPriceToday = 0;
+        $result->totalPriceMonth = 0;
+        $result->totalOrdersToday = 0;
+        $result->totalOrdersMonth = 0;
+        $totalBaskets = 0;
+        foreach ($response as $item){
+            $result->total += (float)$item['QPRICE'];
+            $totalBaskets++;
+
+            if (substr($item['CURDATE'], 0, 10) === $currentDay) {
+                $result->totalPriceToday += (float)$item['QPRICE'];
+                $result->totalOrdersToday++;
+            }
+
+            if (substr($item['CURDATE'], 0, 7) === $currentMonth) {
+                $result->totalPriceMonth += (float)$item['QPRICE'];
+                $result->totalOrdersMonth++;
+            }
+        }
+        $result->averageTotalBasket = $totalBaskets > 0 ? $result->total / $totalBaskets : 0;
+        return $result;
     }
 
 }

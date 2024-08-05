@@ -41,6 +41,12 @@ services:
             $repository: '@App\Repository\UserRepository'
             $erpManager: '@App\Erp\Core\ErpManager'
 
+    App\Cron\Core\GetAgents:
+        autowire: true
+        arguments:
+            $repository: '@App\Repository\UserRepository'
+            $erpManager: '@App\Erp\Core\ErpManager'
+
     App\Cron\Core\GetProducts:
         autowire: true
         arguments:

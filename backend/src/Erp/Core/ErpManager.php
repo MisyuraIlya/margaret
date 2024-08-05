@@ -5,6 +5,7 @@ namespace App\Erp\Core;
 use App\Entity\History;
 use App\Entity\User;
 use App\Enum\DocumentsType;
+use App\Erp\Core\Dto\AgentStatisticDto;
 use App\Erp\Core\Dto\CartessetDto;
 use App\Erp\Core\Dto\CategoriesDto;
 use App\Erp\Core\Dto\DocumentItemsDto;
@@ -144,6 +145,15 @@ class ErpManager implements ErpInterface
     public function GetProductImage(string $sku)
     {
         return $this->erp->GetProductImage($sku);
+    }
+    public function GetAgents(): UsersDto
+    {
+        return $this->erp->GetAgents();
+    }
+
+    public function GetAgentStatistic($agentId):AgentStatisticDto
+    {
+        return $this->erp->GetAgentStatistic($agentId);
     }
 
 }

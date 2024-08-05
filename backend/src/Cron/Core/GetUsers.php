@@ -43,6 +43,12 @@ class GetUsers
                 $user->setHp($itemRec->hp);
                 $user->setTaxCode($itemRec->taxCode);
                 $user->setSearch($itemRec->userExId . ' ' . $itemRec->name);
+                if($itemRec->agentCode){
+                    $agent = $this->repository->findOneByExtIdAndAgent($itemRec->agentCode);
+                    if($agent){
+                        $user->setAgentId($agent);
+                    }
+                }
                 $this->repository->createUser($user, true);
             }
         }
@@ -50,36 +56,48 @@ class GetUsers
 
     public function sync()
     {
+
         $response = $this->erpManager->GetUsers();
         foreach ($response->users as $itemRec) {
-            $user = $this->repository->findOneByExIdAndPhone($itemRec->userExId, $itemRec->phone);
-            if($itemRec->userExId) {
-                if(empty($user)){
-                    $user = new User();
-                    $user->setExtId($itemRec->userExId);
-                    $user->setPhone($itemRec->phone);
-                    $user->setCreatedAt(new \DateTimeImmutable());
-                    $user->setIsRegistered(false);
-                }
-                $user->setIsAgent(false);
-                $user->setRoles(UsersTypes::USER);
-                $user->setRole(UsersTypes::USER);
-                $user->setIsBlocked($itemRec->isBlocked);
-                $user->setUpdatedAt(new \DateTimeImmutable());
-                $user->setName($itemRec->name);
-                $user->setIsAllowOrder(true);
-                $user->setIsAllowAllClients(false);
-                $user->setMaxCredit($itemRec->maxCredit);
-                $user->setMaxObligo($itemRec->maxObligo);
-                $user->setPayCode($itemRec->payCode);
-                $user->setPayDes($itemRec->payDes);
-                $user->setHp($itemRec->hp);
-                $user->setTaxCode($itemRec->taxCode);
-                $user->setSearch($itemRec->userExId . ' ' . $itemRec->name);
-                $this->repository->createUser($user, true);
+            try {
+                $user = $this->repository->findOneByExIdAndPhone($itemRec->userExId, $itemRec->phone);
+                if($itemRec->userExId) {
+                    if(empty($user)){
+                        $user = new User();
+                        $user->setExtId($itemRec->userExId);
+                        $user->setPhone($itemRec->phone);
+                        $user->setCreatedAt(new \DateTimeImmutable());
+                        $user->setIsRegistered(false);
+                    }
+                    $user->setIsAgent(false);
+                    $user->setRoles(UsersTypes::USER);
+                    $user->setRole(UsersTypes::USER);
+                    $user->setIsBlocked($itemRec->isBlocked);
+                    $user->setUpdatedAt(new \DateTimeImmutable());
+                    $user->setName($itemRec->name);
+                    $user->setIsAllowOrder(true);
+                    $user->setIsAllowAllClients(false);
+                    $user->setMaxCredit($itemRec->maxCredit);
+                    $user->setMaxObligo($itemRec->maxObligo);
+                    $user->setPayCode($itemRec->payCode);
+                    $user->setPayDes($itemRec->payDes);
+                    $user->setHp($itemRec->hp);
+                    $user->setTaxCode($itemRec->taxCode);
+                    $user->setSearch($itemRec->userExId . ' ' . $itemRec->name);
+                    if($itemRec->agentCode){
+                        $agent = $this->repository->findOneByExtIdAndAgent($itemRec->agentCode);
+                        if($agent){
+                            $user->setAgentId($agent);
+                        }
+                    }
+                    $this->repository->createUser($user, true);
 
-                $this->SyncChildren($itemRec->subUsers,$user);
+                    $this->SyncChildren($itemRec->subUsers,$user);
+                }
+            } catch (\Exception $exception){
+                dd($exception->getMessage(),$itemRec->agentCode);
             }
+
         }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use ApiPlatform\Doctrine\Orm\Paginator;
 use App\Entity\User;
+use App\Enum\UsersTypes;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -77,6 +78,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->createQueryBuilder('u')
             ->where('u.extId = :val1')
             ->setParameter('val1', $extId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findOneByExtIdAndAgent($extId): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.extId = :extId')
+            ->andWhere('u.role = :role')
+            ->setParameter('extId', $extId)
+            ->setParameter('role', UsersTypes::AGENT)
             ->getQuery()
             ->getOneOrNullResult();
     }

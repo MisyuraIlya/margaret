@@ -20,6 +20,7 @@ class UserDto
     public ?float $maxObligo;
     public ?string $hp;
     public ?string $taxCode;
+    public ?string $agentCode;
 
     /** @var UserDto[] */
     public $subUsers = [];

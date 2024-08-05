@@ -1,7 +1,7 @@
 import React from 'react'
 import { numberWithCommas } from '../../../helpers/numberWithCommas'
 import { useAuth } from '../../../store/auth.store'
-import { Box, Card, Grid, Typography } from '@mui/material'
+import { Box, Card, CircularProgress, Grid, Typography } from '@mui/material'
 import SupportAgentIcon from '@mui/icons-material/SupportAgent'
 import LegendToggleIcon from '@mui/icons-material/LegendToggle'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
@@ -9,10 +9,29 @@ import hooks from '../../../hooks'
 import Utils from '../../../utils'
 const MainInfo = () => {
   const { isAdmin, isSuperAgent } = useAuth()
-  const { data } = hooks.agent.useDataAgentProfile()
+  const { data, isLoading } = hooks.agent.useDataAgentProfile()
   const { user } = useAuth()
   return (
-    <Card sx={{ padding: '10px' }}>
+    <Card sx={{ padding: '10px', position: 'relative' }}>
+      {isLoading && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(5px)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 9999,
+          }}
+        >
+          <CircularProgress color="inherit" />
+        </Box>
+      )}
       <Grid container spacing={10}>
         <Grid item sm={7} xs={12} className="centered">
           <Grid container spacing={2} className="centered">
@@ -96,11 +115,11 @@ const MainInfo = () => {
             </Grid>
             <Grid item xs={6} sx={{ gap: '5px' }}>
               <Typography variant="body2" textAlign={'center'}>
-                {'סה"כ משימות'}
+                {'כמות עסקאות חודשי'}
               </Typography>
               <Box className="centered" sx={{ marginTop: '5px' }}>
                 <Utils.MyCheapButton>
-                  {numberWithCommas(data?.totalMissions)}
+                  {numberWithCommas(data?.totalMonthCount)}
                 </Utils.MyCheapButton>
               </Box>
             </Grid>

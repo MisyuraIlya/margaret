@@ -211,7 +211,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->agentObjectives = new ArrayCollection();
         $this->clientObjectives = new ArrayCollection();
         $this->priceListUsers = new ArrayCollection();
-        $this->atar = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->usersAgent = new ArrayCollection();
         $this->notificationUsers = new ArrayCollection();
