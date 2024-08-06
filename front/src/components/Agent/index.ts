@@ -5,7 +5,7 @@ import Visits from './Visits'
 import Tabs from './Tabs'
 import SideBar from './SideBar'
 import Clients from './Clients'
-
+import Statistics from './Statistics'
 export default {
   Dashboard: Dashboard,
   Missions: Missions,
@@ -14,4 +14,5 @@ export default {
   Tabs: Tabs,
   SideBar: SideBar,
   Clients: Clients,
+  Statistics: Statistics,
 }

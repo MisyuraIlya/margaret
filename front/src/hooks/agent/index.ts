@@ -5,7 +5,7 @@ import useDataAgentObjectives from './useAgentDataObjectives'
 import useDataAgentProfile from './useAgentDataProfile'
 import useDataAgentTargets from './useAgentDataTargets'
 import useDataAgents from './useAgentsData'
-
+import useDataAgentsStatistics from './useDataAgentsStatistics'
 export default {
   useDataAgentClients,
   useDataAgentDashboard,
@@ -14,4 +14,5 @@ export default {
   useDataAgentProfile,
   useDataAgentTargets,
   useDataAgents,
+  useDataAgentsStatistics,
 }

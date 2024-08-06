@@ -28,17 +28,17 @@ RUN curl -sS https://get.symfony.com/cli/installer | bash
 COPY . .
 
 # Ensure composer.lock file is updated
-RUN composer update
+# RUN composer update
 
 # Install dependencies using Composer
-RUN composer install --no-scripts --no-autoloader
+# RUN composer install --no-scripts --no-autoloader
 
 # Generate autoload files
-RUN composer dump-autoload --optimize
+# RUN composer dump-autoload --optimize
 
-RUN composer require symfony/runtime
+# RUN composer require symfony/runtime
 
-RUN composer require symfony/maker-bundle --dev
+# RUN composer require symfony/maker-bundle --dev
 
 # Copy initialization script
 COPY initDev.sh /usr/local/bin/initDev.sh

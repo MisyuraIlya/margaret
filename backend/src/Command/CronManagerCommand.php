@@ -221,16 +221,15 @@ class CronManagerCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-//        $this->agents->sync();
-
-//        $this->Initialization();
-//        $this->priceList->sync();
+        $this->Initialization();
+        $this->agents->sync();
+        $this->priceList->sync();
         $this->users->sync();
-//        $this->priceListUser->sync();
+        $this->priceListUser->sync();
 //
-//        $this->categories->sync();
-//        $this->products->sync();
-//        $this->priceListDetailed->sync();
+        $this->categories->sync();
+        $this->products->sync();
+        $this->priceListDetailed->sync();
 //        $this->packs->sync();;
 //        $this->productPacks->sync();
 //        $this->stocks->sync();

@@ -15,16 +15,14 @@ import {
 const SideBar = () => {
   // const { agentList } = useAgentProfileStore()
   const { setAgent, user } = useAuth()
-  const { id } = useParams()
-  console.log('user', user)
-  // const { pathname } = useLocation()
+  const { id, dateFrom, dateTo } = useParams()
   // const page = pathname.split('/')[1]
   const { data } = hooks.agent.useDataAgents()
   const navigate = useNavigate()
 
   const handleChange = (agent: IUser) => {
     setAgent(agent)
-    navigate(`/agentDashboard/0/${agent.id}`)
+    navigate(`/agentDashboard/0/${agent.id}/${dateFrom}/${dateTo}`)
   }
   return (
     <>

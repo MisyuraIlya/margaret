@@ -85,12 +85,13 @@ const AgentDashboard = () => {
       <Utils.BreadCrumbsUtil array={[]} />
       <Grid container spacing={2}>
         <Grid item sm={3} xs={12}>
-          {/* {(isSuperAgent || isAdmin) &&  */}
           <Agent.SideBar />
-          {/* // } */}
         </Grid>
         <Grid item sm={9} xs={12}>
-          <Tabs baseRoute="/agentDashboard" params={['tab', 'id']}>
+          <Tabs
+            baseRoute="/agentDashboard"
+            params={['tab', 'id', 'dateFrom', 'dateTo']}
+          >
             {components.map((tab, index) => (
               <Tab key={index} label={tab.title}>
                 <Box sx={{ margin: '20px 0' }}>{tab.component}</Box>

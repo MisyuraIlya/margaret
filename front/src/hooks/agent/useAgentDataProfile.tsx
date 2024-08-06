@@ -2,19 +2,29 @@ import useSWR from 'swr'
 import { useParams } from 'react-router-dom'
 import services from '../../services'
 
-const fetchDataProfile = async (agentId: string) => {
-  return await services.Agents.agentProfileService.getAgentProfile(agentId)
+const fetchDataProfile = async (
+  agentId: string,
+  dateFrom: string,
+  dateTo: string
+) => {
+  return await services.Agents.agentProfileService.getAgentProfile(
+    agentId,
+    dateFrom,
+    dateTo
+  )
 }
 
 type RouteParams = {
   id: string
+  dateFrom: string
+  dateTo: string
 }
 
 const useDataAgentProfile = () => {
-  const { id } = useParams<RouteParams>()
+  const { id, dateFrom, dateTo } = useParams<RouteParams>()
 
   const { data, isLoading } = useSWR(`/agentProfile/${id}`, () =>
-    fetchDataProfile(id!)
+    fetchDataProfile(id!, dateFrom!, dateTo!)
   )
 
   const findTarget = (numberMonth: number) => {

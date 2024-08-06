@@ -32,9 +32,19 @@ interface IAgentObjective {
   subTusk: IAgentObjective[]
 }
 
+interface IAgentsStatistic {
+  lines: IAgentProfile[]
+  total: number
+  totalOrders: number
+  averageTotal: number
+}
+
 interface IAgentProfile {
+  agentName: string
+  agentExtId: string
   totalPriceMonth: number
-  totalPriceYear: number
+  total: number
+  totalOrders: number
   averageBasket: number
   totalClients: number
   monthlyTotals: IMonthlyTotals[]
@@ -49,6 +59,9 @@ interface IAgentProfile {
 interface IMonthlyTotals {
   month: number
   total: number
+  monthTitle: string
+  target: number
+  succeed: boolean | null
 }
 
 interface IPerformanceInfo {

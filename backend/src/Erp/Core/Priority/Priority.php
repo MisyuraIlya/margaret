@@ -801,14 +801,26 @@ class Priority implements ErpInterface
         return $usersDto;
     }
 
-    public function GetAgentStatistic(string $agentId): AgentStatisticDto
+    public function GetAgentStatistic(string $agentId, string $dateFrom, string $dateTo): AgentStatisticDto
     {
         $endpoint = "/ORDERS";
         $currentYear = new \DateTimeImmutable();
-        $dateFrom = $currentYear->setDate($currentYear->format('Y'), 1, 1)->setTime(0, 0, 0, 0)->format('Y-m-d\TH:i:s.u\Z');
-        $dateTo = $currentYear->setDate($currentYear->format('Y'), 12, 31)->setTime(23, 59, 59, 999999)->format('Y-m-d\TH:i:s.u\Z');
+        if ($dateFrom) {
+            $dateFrom = \DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s.u\Z', $dateFrom) ?: new \DateTimeImmutable($dateFrom);
+        } else {
+            $dateFrom = $currentYear->setDate($currentYear->format('Y'), 1, 1)->setTime(0, 0, 0, 0);
+        }
+
+        if ($dateTo) {
+            $dateTo = \DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s.u\Z', $dateTo) ?: new \DateTimeImmutable($dateTo);
+        } else {
+            $dateTo = $currentYear->setDate($currentYear->format('Y'), 12, 31)->setTime(23, 59, 59, 999999);
+        }
+        $dateFromFormatted = $dateFrom->format('Y-m-d\TH:i:s.u\Z');
+        $dateToFormatted = $dateTo->format('Y-m-d\TH:i:s.u\Z');
+
         $queryParameters = [
-            '$filter' => "AGENTCODE eq '$agentId' and CURDATE ge $dateFrom and CURDATE le $dateTo",
+            '$filter' => "AGENTCODE eq '$agentId' and CURDATE ge $dateFromFormatted and CURDATE le $dateToFormatted",
             '$select' => "QPRICE,CURDATE"
         ];
         $queryString = http_build_query($queryParameters);
@@ -819,6 +831,7 @@ class Priority implements ErpInterface
 
         $result = new AgentStatisticDto();
         $result->total = 0;
+        $result->totalOrders = 0;
         $result->averageTotalBasket = 0;
         $result->totalPriceToday = 0;
         $result->totalPriceMonth = 0;
@@ -826,18 +839,22 @@ class Priority implements ErpInterface
         $result->totalOrdersMonth = 0;
         $totalBaskets = 0;
         $monthlyTotals = [];
+
+// Initialize the monthlyTotals array with all months set to 0
+        for ($month = 1; $month <= 12; $month++) {
+            $key = $currentYear->format('Y') . '-' . str_pad($month, 2, '0', STR_PAD_LEFT);
+            $monthlyTotals[$key] = 0;
+        }
+
         foreach ($response as $item) {
             $result->total += (float)$item['QPRICE'];
             $totalBaskets++;
+            $result->totalOrders++;
             $date = new \DateTime($item['CURDATE']);
             $month = $date->format('n');
             $year = $date->format('Y');
 
             $key = $year . '-' . str_pad($month, 2, '0', STR_PAD_LEFT);
-
-            if (!isset($monthlyTotals[$key])) {
-                $monthlyTotals[$key] = 0;
-            }
 
             $monthlyTotals[$key] += (float)$item['QPRICE'];
 
@@ -852,10 +869,28 @@ class Priority implements ErpInterface
             }
         }
         $result->averageTotalBasket = $totalBaskets > 0 ? $result->total / $totalBaskets : 0;
+        $hebrewMonths = [
+            1 => 'ינואר',  // January
+            2 => 'פברואר', // February
+            3 => 'מרץ',    // March
+            4 => 'אפריל',  // April
+            5 => 'מאי',    // May
+            6 => 'יוני',   // June
+            7 => 'יולי',   // July
+            8 => 'אוגוסט', // August
+            9 => 'ספטמבר', // September
+            10 => 'אוקטובר', // October
+            11 => 'נובמבר', // November
+            12 => 'דצמבר'  // December
+        ];
         $monthlyTotalsArray = [];
         foreach ($monthlyTotals as $key => $total) {
             list($year, $month) = explode('-', $key);
-            $monthlyTotalsArray[] = ['month' => (int)$month, 'total' => round($total, 2)];
+            $monthlyTotalsArray[] = [
+                'month' => (int)$month,
+                'total' => round($total, 2),
+                'monthTitle' => $hebrewMonths[(int)$month]
+            ];
         }
         $result->monthlyTotals = $monthlyTotalsArray;
 

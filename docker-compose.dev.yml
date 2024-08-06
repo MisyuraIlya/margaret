@@ -16,7 +16,6 @@ services:
       - php81-service
       - mysql8-service
       - phpmyadmin-service
-      - react-front-end
     networks:
       - nginx-php81-mysql8-node
 
@@ -69,13 +68,13 @@ services:
       - nginx-php81-mysql8-node
 
   # React Front-End
-  react-front-end:
-    build:
-      context: ./front
-      dockerfile: ./Dockerfile.dev
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./front:/usr/src/app
-    networks:
-      - nginx-php81-mysql8-node
+#  react-front-end:
+#    build:
+#      context: ./front
+#      dockerfile: ./Dockerfile.dev
+#    ports:
+#      - "3000:3000"
+#    volumes:
+#      - ./front:/usr/src/app
+#    networks:
+#      - nginx-php81-mysql8-node

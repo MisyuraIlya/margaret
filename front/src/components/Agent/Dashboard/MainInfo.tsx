@@ -39,8 +39,8 @@ const MainInfo = () => {
               <Box className="centered" sx={{ gap: '10px' }}>
                 <SupportAgentIcon />
                 <Box sx={{ marginTop: '5px' }}>
-                  <Typography>{user?.name}</Typography>
-                  <Typography>{user?.phone}</Typography>
+                  <Typography>{data?.agentName}</Typography>
+                  <Typography>{data?.agentExtId}</Typography>
                 </Box>
               </Box>
             </Grid>
@@ -69,7 +69,7 @@ const MainInfo = () => {
                 </Grid>
                 <Grid item xs={5}>
                   <Utils.MyCheapButton>
-                    {numberWithCommas(data?.totalPriceYear)}
+                    {numberWithCommas(data?.total)}
                   </Utils.MyCheapButton>
                 </Grid>
               </Grid>

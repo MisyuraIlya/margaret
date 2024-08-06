@@ -1,3 +1,6 @@
-/mysql
-global.js
-setup.sh
+vendor
+var
+/public/media/product/
+/public/media/category/
+/public/media/notifications/
+/public/imagesResized/

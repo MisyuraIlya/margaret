@@ -43,7 +43,6 @@ const Targets = () => {
       ],
     }
   })
-  console.log('sales', sales)
 
   const seriesDesktop = [
     {

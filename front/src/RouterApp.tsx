@@ -22,6 +22,7 @@ import CartessetPage from './pages/CartessetPage'
 import HovotPage from './pages/Hovot'
 import HomeEditPage from './pages/HomeEditPage'
 import { useAuthProvider } from './provider/AuthProvider'
+import AgentStatistics from './pages/AgentStatistics'
 const RouterApp = () => {
   const { isAuthrized } = useAuthProvider()
   return (
@@ -50,6 +51,10 @@ const RouterApp = () => {
             <Route
               path={URLS.AGENT_DASHBOARD.ROUTER}
               element={<AgentDashboard />}
+            />
+            <Route
+              path={URLS.AGENT_STATISTICS.ROUTER}
+              element={<AgentStatistics />}
             />
 
             {/* ADMIN */}

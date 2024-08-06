@@ -2,6 +2,8 @@ import moment from 'moment'
 
 const dateFrom = moment().subtract(1, 'day').format('YYYY-MM-DD')
 const dateTo = moment().format('YYYY-MM-DD')
+
+const fromYear = moment().startOf('year').format('YYYY-MM-DD')
 export const URLS = {
   HOME: {
     LINK: '/',
@@ -88,6 +90,11 @@ export const URLS = {
     LINK: `/documentPage/approve/${dateFrom}/${dateTo}`,
     LABEL: 'הזמנות לאישור',
   },
+  AGENT_STATISTICS: {
+    ROUTER: '/agentStatistics/:tab/:dateFrom/:dateTo',
+    LINK: `/agentStatistics/0/${dateFrom}/${dateTo}`,
+    LABEL: 'ביצועי סוכנים',
+  },
 
   AGENT_CLIENTS: {
     LINK: '/agentClients',
@@ -95,11 +102,11 @@ export const URLS = {
     ROUTER: '/agentClients/:agentId',
   },
   AGENT_DASHBOARD: {
-    LINK: ``,
+    LINK: `/agentDashboard/0/0/${fromYear}/${dateTo}`,
     LABEL: 'דאשבורד',
-    ROUTER: '/agentDashboard/:tab/:id',
+    ROUTER: `/agentDashboard/:tab/:id/:dateFrom/:dateTo`,
   },
-  AGNET_DASHBOARD: {
+  AGNET_DOCUMENTS: {
     LINK: `/documentPage/history/${dateFrom}/${dateTo}`,
     LABEL: 'מסמכים',
   },

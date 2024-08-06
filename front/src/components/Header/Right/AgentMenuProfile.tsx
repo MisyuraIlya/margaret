@@ -13,7 +13,8 @@ import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl'
 import StickyNote2OutlinedIcon from '@mui/icons-material/StickyNote2Outlined'
 import { useAuth } from '../../../store/auth.store'
 import { useNavigate } from 'react-router-dom'
-
+import AssessmentIcon from '@mui/icons-material/Assessment'
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 const agentURL = {
   // DOCUMENT_APPROCE: {
   //   LINK: URLS.AGNET_DASHBOARD.LINK,
@@ -25,6 +26,11 @@ const agentURL = {
   //   LABEL: URLS.HISTORY.LABEL,
   //   ICON: <ArticleOutlinedIcon sx={{ fontSize: '25px' }} />,
   // },
+  AGENT_DASHBOARD: {
+    LINK: URLS.AGENT_DASHBOARD.LINK,
+    LABEL: URLS.AGENT_DASHBOARD.LABEL,
+    ICON: <AssignmentIndIcon sx={{ fontSize: '25px' }} />,
+  },
   ORDER_TO_VERIFY: {
     LINK: URLS.APPROVE.LINK,
     LABEL: URLS.APPROVE.LABEL,
@@ -35,11 +41,11 @@ const agentURL = {
     LABEL: URLS.DOCUMENTS.LABEL,
     ICON: <StickyNote2OutlinedIcon sx={{ fontSize: '25px' }} />,
   },
-  // AGENT_STATISTICS: {
-  //   LINK: URLS.AGNET_AGENT_STATISTICS.LINK,
-  //   LABEL: URLS.AGNET_AGENT_STATISTICS.LABEL,
-  //   ICON: <SupportAgentOutlinedIcon sx={{ fontSize: '25px' }} />,
-  // },
+  AGENT_STATISTICS: {
+    LINK: URLS.AGENT_STATISTICS.LINK,
+    LABEL: URLS.AGENT_STATISTICS.LABEL,
+    ICON: <AssessmentIcon sx={{ fontSize: '25px' }} />,
+  },
   // DOCUMENT_OFFLINE: {
   //   LINK: URLS.AGENT_DOCUMENT_OFFLINE.LINK,
   //   LABEL: URLS.AGENT_DOCUMENT_OFFLINE.LABEL,

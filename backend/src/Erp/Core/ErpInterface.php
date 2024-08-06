@@ -58,6 +58,6 @@ interface ErpInterface
 
     public function GetAgents(): UsersDto;
 
-    public function GetAgentStatistic(string $agentId): AgentStatisticDto;
+    public function GetAgentStatistic(string $agentId, string $dateFrom, string $dateTo): AgentStatisticDto;
 
 }

@@ -119,12 +119,23 @@ export const agentProfileService = {
     return response.data
   },
 
-  // AgentProfile
   async getAgentProfile(
-    agentId: number | string | null
+    agentId: number | string | null,
+    dateFrom: string,
+    dateTo: string
   ): Promise<IAgentProfile> {
     const response = await axios.get(
-      `${process.env.REACT_APP_API}/agentProfile/${agentId}`
+      `${process.env.REACT_APP_API}/agentProfile/${agentId}/${dateFrom}/${dateTo}`
+    )
+    return response.data
+  },
+
+  async getAgentsStatistsics(
+    dateFrom: string,
+    dateTo: string
+  ): Promise<IAgentsStatistic> {
+    const response = await axios.get(
+      `${process.env.REACT_APP_API}/agentsStatistic/${dateFrom}/${dateTo}`
     )
     return response.data
   },
