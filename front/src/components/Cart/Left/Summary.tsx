@@ -9,6 +9,8 @@ import {
   Button,
   TextField,
   CircularProgress,
+  Select,
+  MenuItem,
 } from '@mui/material'
 import { useCart } from '../../../store/cart.store'
 import { themeColors } from '../../../styles/mui'
@@ -27,7 +29,8 @@ const Summary = () => {
   const { mutate } = hooks.useDataNotificationUser()
   const { selectedMode, cart, comment, setComment, sendOrder, setCart } =
     useCart()
-
+  const [delivery, setDelivery] = useState<IDelivery[]>([])
+  const [choosedDate, setChoosedDate] = useState('')
   const { openPopUpPay, setOpenPopUpPay } = useModals()
 
   const handlePay = () => {
@@ -66,6 +69,7 @@ const Summary = () => {
         setLoading(true)
         const response = await CartServices.CheckCart(user, cart)
         setTax(response.data.maam)
+        setDelivery(response.data.delivery)
       } catch (e) {
         console.log('error', e)
       } finally {
@@ -81,7 +85,7 @@ const Summary = () => {
   const priceCalculator = new PriceCalculator(tax, user, cart)
 
   const isDisabledButton = () => {
-    if (priceCalculator.getCountFromMinimumPirce() > 0) {
+    if (priceCalculator.getCountFromMinimumPirce() > 0 || !choosedDate) {
       return true
     } else {
       return false
@@ -227,6 +231,22 @@ const Summary = () => {
             </Typography>
           ) : null}
 
+          <Box>
+            <Typography variant='h6' color={'primary'} textAlign={'center'}>
+              בחר תאריך אספקה
+            </Typography>
+            <Select
+              value={choosedDate}
+              sx={{ height: '40px', width:'100%' }}
+              onChange={(e) => setChoosedDate(e.target.value)}
+            >
+              {delivery?.map((item, index) => (
+                <MenuItem value={item.date} key={index}>
+                  {item.hebrewDay}  {item.date}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
           <Box sx={{ margin: '10px 0px' }}>
             <TextField
               label="הערה למשלוח"

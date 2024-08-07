@@ -156,4 +156,8 @@ class ErpManager implements ErpInterface
         return $this->erp->GetAgentStatistic($agentId, $dateFrom, $dateTo);
     }
 
+    public function GetUserDeliveryInfo($userExtId)
+    {
+        return $this->erp->GetUserDeliveryInfo($userExtId);
+    }
 }

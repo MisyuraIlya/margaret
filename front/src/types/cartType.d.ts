@@ -21,6 +21,16 @@ type IPriceMode = 'selfPrice' | 'updatedPrice'
 
 interface ICartCheck {
   maam: float
+  delivery: IDelivery[]
+}
+
+interface IDelivery {
+  date: string
+  hebrewDay: string
+  day:string
+  fromtTime:string
+  toTime:string
+  isCanSend: boolean
 }
 
 interface CartCheckResponse extends ApiResponse {

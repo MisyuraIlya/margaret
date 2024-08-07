@@ -801,6 +801,32 @@ class Priority implements ErpInterface
         return $usersDto;
     }
 
+    public function GetUserDeliveryInfo($userExtId)
+    {
+        $endpoint = "/CUSTOMERS";
+        $queryParameters = [
+            '$select' => 'CUSTNAME',
+            '$filter' => "CUSTNAME eq '$userExtId'",
+            '$expand' => 'CUSTWEEKDAY_SUBFORM',
+        ];
+        $queryString = http_build_query($queryParameters);
+        $urlQuery = $endpoint . '?' . $queryString;
+
+        $result = [];
+        $response = $this->GetRequest($urlQuery);
+        foreach ($response as $itemRec) {
+          foreach ($itemRec['CUSTWEEKDAY_SUBFORM'] as $subRec) {
+              $obj = new \stdClass();
+              $obj->day = $subRec['WEEKDAY'];
+              $obj->fromTime = $subRec['FROMTIME'];
+              $obj->toTime = $subRec['TOTIME'];
+              $result[] = $obj;
+          }
+        }
+
+        return $result;
+    }
+
     public function GetAgentStatistic(string $agentId, string $dateFrom, string $dateTo): AgentStatisticDto
     {
         $endpoint = "/ORDERS";
