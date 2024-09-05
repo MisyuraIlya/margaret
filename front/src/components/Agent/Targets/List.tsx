@@ -8,7 +8,7 @@ import hooks from '../../../hooks'
 import { useAgentStore } from '../../../store/agent.store'
 
 const List = () => {
-  const { user } = useAuth()
+  const { user, isSuperAgent } = useAuth()
   const { year } = useAgentStore()
   const { data, isLoading } = hooks.agent.useDataAgentTargets(year)
   const { findTarget } = hooks.agent.useDataAgentProfile()
@@ -55,11 +55,13 @@ const List = () => {
             סטאטוס
           </Typography>
         </Grid>
-        <Grid item xs={1}>
-          <Typography variant="body1" fontWeight={700}>
-            פעולות
-          </Typography>
-        </Grid>
+        {isSuperAgent &&
+          <Grid item xs={1}>
+            <Typography variant="body1" fontWeight={700}>
+              פעולות
+            </Typography>
+          </Grid>
+        }
       </Grid>
       {isLoading ? (
         <Box className="centered">

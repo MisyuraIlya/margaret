@@ -5,11 +5,12 @@ import Utils from '../utils'
 import Agent from '../components/Agent'
 import AddIcon from '@mui/icons-material/Add'
 import Modals from '../components/Modals'
+import { useAuth } from '../store/auth.store'
 
 const AgentDashboard = () => {
   const [openVisitModal, setOpenVisiModal] = useState(false)
   const [openMission, setOpenMission] = useState(false)
-
+  const { user, isSuperAgent } = useAuth()
   const components = [
     {
       title: 'דאשבורד',
@@ -28,21 +29,24 @@ const AgentDashboard = () => {
         <>
           <Agent.Missions.Filter />
           <Agent.Missions.Schedule />
-          <Fab
-            color="primary"
-            aria-label="add"
-            sx={{
-              position: 'fixed',
-              right: '50px',
-              bottom: '50px',
-              borderRadius: '5px',
-              width: '80px',
-              height: '80px',
-            }}
-            onClick={() => setOpenMission(true)}
-          >
-            <AddIcon style={{ fontSize: '50px' }} />
-          </Fab>
+          {isSuperAgent &&
+            <Fab
+               color="primary"
+               aria-label="add"
+               sx={{
+                 position: 'fixed',
+                 right: '50px',
+                 bottom: '50px',
+                 borderRadius: '5px',
+                 width: '80px',
+                 height: '80px',
+               }}
+               onClick={() => setOpenMission(true)}
+             >
+               <AddIcon style={{ fontSize: '50px' }} />
+             </Fab>
+          }
+     
         </>
       ),
     },
@@ -51,21 +55,24 @@ const AgentDashboard = () => {
       component: (
         <>
           <Agent.Visits.List />
-          <Fab
-            color="primary"
-            aria-label="add"
-            sx={{
-              position: 'fixed',
-              right: '50px',
-              bottom: '50px',
-              borderRadius: '5px',
-              width: '80px',
-              height: '80px',
-            }}
-            onClick={() => setOpenVisiModal(true)}
-          >
-            <AddIcon style={{ fontSize: '50px' }} />
-          </Fab>
+          {isSuperAgent &&
+            <Fab
+              color="primary"
+              aria-label="add"
+              sx={{
+                position: 'fixed',
+                right: '50px',
+                bottom: '50px',
+                borderRadius: '5px',
+                width: '80px',
+                height: '80px',
+              }}
+              onClick={() => setOpenVisiModal(true)}
+            >
+              <AddIcon style={{ fontSize: '50px' }} />
+            </Fab>
+          }
+        
         </>
       ),
     },
@@ -84,10 +91,13 @@ const AgentDashboard = () => {
     <Container maxWidth="xl">
       <Utils.BreadCrumbsUtil array={[]} />
       <Grid container spacing={2}>
-        <Grid item sm={3} xs={12}>
-          <Agent.SideBar />
-        </Grid>
-        <Grid item sm={9} xs={12}>
+        {user?.role ==='ROLE_SUPER_AGENT' &&
+          <Grid item sm={3} xs={12}>
+            <Agent.SideBar />
+          </Grid>
+        }
+    
+        <Grid item sm={user?.role ==='ROLE_SUPER_AGENT' ?9 : 12} xs={12}>
           <Tabs
             baseRoute="/agentDashboard"
             params={['tab', 'id', 'dateFrom', 'dateTo']}

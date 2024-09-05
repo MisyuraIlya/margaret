@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom'
 import AssessmentIcon from '@mui/icons-material/Assessment'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 import TransferWithinAStationIcon from '@mui/icons-material/TransferWithinAStation'
+import moment from 'moment'
 
 const agentURL = {
   // DOCUMENT_APPROCE: {
@@ -32,21 +33,25 @@ const agentURL = {
     LINK: URLS.AGENT_DASHBOARD.LINK,
     LABEL: URLS.AGENT_DASHBOARD.LABEL,
     ICON: <AssignmentIndIcon sx={{ fontSize: '25px' }} />,
+    AGENT: true
   },
   ORDER_TO_VERIFY: {
     LINK: URLS.APPROVE.LINK,
     LABEL: URLS.APPROVE.LABEL,
     ICON: <ChecklistRtlIcon sx={{ fontSize: '25px' }} />,
+    AGENT: false
   },
   ORDER_AGENT: {
     LINK: URLS.DOCUMENTS.LINK,
     LABEL: URLS.DOCUMENTS.LABEL,
     ICON: <StickyNote2OutlinedIcon sx={{ fontSize: '25px' }} />,
+    AGENT: true
   },
   AGENT_STATISTICS: {
     LINK: URLS.AGENT_STATISTICS.LINK,
     LABEL: URLS.AGENT_STATISTICS.LABEL,
     ICON: <AssessmentIcon sx={{ fontSize: '25px' }} />,
+    AGENT: false
   },
   // DOCUMENT_OFFLINE: {
   //   LINK: URLS.AGENT_DOCUMENT_OFFLINE.LINK,
@@ -63,6 +68,13 @@ const AgentMenuProfile: FC<AgentMenuProfileProps> = ({ handleClose }) => {
   const navigate = useNavigate()
 
   const handleClick = (link: string) => {
+    if(link.includes('agentDashboard')){
+      console.log('aasdas')
+      const dateTo = moment().format('YYYY-MM-DD')
+      const fromYear = moment().startOf('year').format('YYYY-MM-DD')
+      navigate(`/agentDashboard/0/${user?.id}/${fromYear}/${dateTo}`)
+      return 
+    }
     if (handleClose) {
       handleClose()
     }
@@ -94,14 +106,34 @@ const AgentMenuProfile: FC<AgentMenuProfileProps> = ({ handleClose }) => {
       <Box sx={{ padding: '16px 0' }}>
         <Divider />
       </Box>
-      {Object.entries(agentURL).map(([key, value]) => (
-        <MenuItem key={key} onClick={() => handleClick(value.LINK)}>
-          <ListItemIcon>{value.ICON}</ListItemIcon>
-          <ListItemText>
-            <Typography variant="h6">{value.LABEL}</Typography>
-          </ListItemText>
-        </MenuItem>
-      ))}
+      {Object.entries(agentURL).map(([key, value]) => {
+        if(user?.role === 'ROLE_AGENT') {
+          if(value.AGENT){
+            return (
+              (
+                <MenuItem key={key} onClick={() => handleClick(value.LINK)}>
+                  <ListItemIcon>{value.ICON}</ListItemIcon>
+                  <ListItemText>
+                    <Typography variant="h6">{value.LABEL}</Typography>
+                  </ListItemText>
+                </MenuItem>
+              )
+            )
+          }
+        } else {
+          return (
+            (
+              <MenuItem key={key} onClick={() => handleClick(value.LINK)}>
+                <ListItemIcon>{value.ICON}</ListItemIcon>
+                <ListItemText>
+                  <Typography variant="h6">{value.LABEL}</Typography>
+                </ListItemText>
+              </MenuItem>
+            )
+          )
+        }
+
+      })}
     </Box>
   )
 }

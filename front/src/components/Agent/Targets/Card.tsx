@@ -25,7 +25,7 @@ interface TargetItemProps {
 const Card: FC<TargetItemProps> = ({ item, index }) => {
   const [open, setOpen] = useState(false)
   const [number, setNumber] = useState(item.targetValue)
-  const { user } = useAuth()
+  const { isSuperAgent } = useAuth()
   const { createTarget, updateTarget } = hooks.agent.useDataAgentTargets(
     item.year!
   )
@@ -110,18 +110,21 @@ const Card: FC<TargetItemProps> = ({ item, index }) => {
               {completedType(item)}
             </Typography>
           </Grid>
-          <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center' }}>
-            <IconButton
-              onClick={() => setOpen(!open)}
-              sx={{
-                borderRadius: '5px',
-                backgroundColor: '#f7f9fc',
-                minWidth: '80px',
-              }}
-            >
-              <ModeEditIcon />
-            </IconButton>
-          </Grid>
+          {isSuperAgent &&
+            <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center' }}>
+              <IconButton
+                onClick={() => setOpen(!open)}
+                sx={{
+                  borderRadius: '5px',
+                  backgroundColor: '#f7f9fc',
+                  minWidth: '80px',
+                }}
+              >
+                <ModeEditIcon />
+              </IconButton>
+            </Grid>
+          }
+  
         </Grid>
       </MuiCard>
 

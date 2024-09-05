@@ -36,6 +36,7 @@ import { useParams } from 'react-router-dom'
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined'
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
 import Modals from '../../Modals'
+
 interface ClientItemProps {
   element: IUser
   index: number
@@ -112,7 +113,7 @@ const Card: FC<ClientItemProps> = ({ element, index }) => {
       element.email = null
       const response = await AdminClinetsService.updateClient(element)
       if (response.status == 'success') {
-        onSuccessAlert('לקוח אופס בהצלחה', '')
+        onSuccessAlert(isUser ?'לקוח אופס בהצלחה' : 'סוכן הופס בהצלחה', '')
       } else {
         onErrorAlert('לא עודכן', response.message)
       }
@@ -124,10 +125,10 @@ const Card: FC<ClientItemProps> = ({ element, index }) => {
     element.email = data.email
     element.passwordUnencrypted = data.password
     element.isRegistered = true
-    element.role = 'ROLE_USER'
+    element.role = userRole as ROLE_TYPES
     const response = await AdminClinetsService.updateClient(element)
     if (response.status == 'success') {
-      onSuccessAlert('לקוח הוקם בהצלחה', '')
+      onSuccessAlert(isUser ? 'לקוח הוקם בהצלחה' : 'סוכן הוקם בהצלחה', '')
     } else {
       onErrorAlert('לא עודכן', response.message)
     }
