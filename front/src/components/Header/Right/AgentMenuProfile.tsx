@@ -15,6 +15,8 @@ import { useAuth } from '../../../store/auth.store'
 import { useNavigate } from 'react-router-dom'
 import AssessmentIcon from '@mui/icons-material/Assessment'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
+import TransferWithinAStationIcon from '@mui/icons-material/TransferWithinAStation'
+
 const agentURL = {
   // DOCUMENT_APPROCE: {
   //   LINK: URLS.AGNET_DASHBOARD.LINK,
@@ -57,7 +59,7 @@ interface AgentMenuProfileProps {
   handleClose?: () => void
 }
 const AgentMenuProfile: FC<AgentMenuProfileProps> = ({ handleClose }) => {
-  const { agent } = useAuth()
+  const { agent, user, setUser, setAgent } = useAuth()
   const navigate = useNavigate()
 
   const handleClick = (link: string) => {
@@ -67,11 +69,28 @@ const AgentMenuProfile: FC<AgentMenuProfileProps> = ({ handleClose }) => {
     navigate(link)
   }
 
+  const handeOutAgent = () => {
+    setAgent(user)
+    navigate(URLS.AGENT_DASHBOARD.LINK)
+  }
+
   return (
     <Box>
       <Box>
-        <Typography variant="h5">{agent?.name}</Typography>
+        <Typography variant="h5">{agent?.name ?? user?.name}</Typography>
       </Box>
+      {user?.id !== agent?.id  && (
+        <MenuItem sx={{ marginTop: '8px' }} onClick={() => handeOutAgent()}>
+          <ListItemIcon>
+            <TransferWithinAStationIcon color="error" />
+          </ListItemIcon>
+          <ListItemText>
+            <Typography variant="h6" color={'error'}>
+              {'התנתק מהסוכן'}
+            </Typography>
+          </ListItemText>
+        </MenuItem>
+      )}
       <Box sx={{ padding: '16px 0' }}>
         <Divider />
       </Box>
