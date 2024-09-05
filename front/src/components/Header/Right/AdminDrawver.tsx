@@ -72,7 +72,7 @@ const AdminDrawver = () => {
           <img
             src={`${process.env.REACT_APP_MEDIA}/logo.png`}
             alt=""
-            style={{ width: '60%' }}
+            style={{ width:'300px' }}
           />
         </Box>
         <Box>
