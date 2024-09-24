@@ -24,6 +24,7 @@ const useDataUsers = () => {
   const urlSearchParams = new URLSearchParams(location.search)
   const page = urlSearchParams.get('page')
   const search = urlSearchParams.get('search')
+  console.log('search',search)
   const { userRole } = useParams<RouteParams>()
   const { data, error, isLoading, isValidating, mutate } = useSWR(
     `api/${userRole}?page=${page}&${search}`,

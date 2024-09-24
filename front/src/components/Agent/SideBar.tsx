@@ -14,7 +14,7 @@ import {
 
 const SideBar = () => {
   // const { agentList } = useAgentProfileStore()
-  const { setAgent, user } = useAuth()
+  const { setAgent, user, setCoreUser } = useAuth()
   const { id, dateFrom, dateTo } = useParams()
   // const page = pathname.split('/')[1]
   const { data } = hooks.agent.useDataAgents()

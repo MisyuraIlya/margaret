@@ -10,7 +10,7 @@ import { useAuth } from '../store/auth.store'
 const AgentDashboard = () => {
   const [openVisitModal, setOpenVisiModal] = useState(false)
   const [openMission, setOpenMission] = useState(false)
-  const { user, isSuperAgent } = useAuth()
+  const { user, isSuperAgent, agent, coreUser } = useAuth()
   const components = [
     {
       title: 'דאשבורד',
@@ -91,13 +91,13 @@ const AgentDashboard = () => {
     <Container maxWidth="xl">
       <Utils.BreadCrumbsUtil array={[]} />
       <Grid container spacing={2}>
-        {user?.role ==='ROLE_SUPER_AGENT' &&
+        {(coreUser?.role ==='ROLE_SUPER_AGENT') &&
           <Grid item sm={3} xs={12}>
             <Agent.SideBar />
           </Grid>
         }
     
-        <Grid item sm={user?.role ==='ROLE_SUPER_AGENT' ?9 : 12} xs={12}>
+        <Grid item sm={(coreUser?.role === 'ROLE_SUPER_AGENT') ? 9 : 12} xs={12}>
           <Tabs
             baseRoute="/agentDashboard"
             params={['tab', 'id', 'dateFrom', 'dateTo']}

@@ -16,9 +16,10 @@ interface AuthState {
   isSuperAgent: boolean
   user: IUser | null
   setUser: (user: IUser | null) => void
-
   agent: IUser | null
   setAgent: (user: IUser | null) => void
+  coreUser: IUser | null;
+  setCoreUser: (user: IUser | null) => void
   // ========== STATES FOR AUTH MODAL ==========
   action: ActionType
   setAction: (value: ActionType) => void
@@ -74,6 +75,8 @@ export const useAuth = create(
 
       agent: null,
       setAgent: (agent) => set({ agent }),
+      coreUser: null,
+      setCoreUser: (coreUser) => set({ coreUser }),
       // ========== STATES FOR AUTH MODAL ==========
       action: 'login',
       setAction: (value: ActionType) => set({ action: value }),
@@ -93,7 +96,7 @@ export const useAuth = create(
           const response = await AuthService.login(username, password)
           if (response.status === 'success') {
             saveToStorage(response)
-            set({ user: response.user })
+            set({ user: response.user, coreUser: response.user })
             if (
               response.user.role === 'ROLE_AGENT' ||
               response.user.role === 'ROLE_SUPER_AGENT'

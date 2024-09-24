@@ -64,12 +64,11 @@ interface AgentMenuProfileProps {
   handleClose?: () => void
 }
 const AgentMenuProfile: FC<AgentMenuProfileProps> = ({ handleClose }) => {
-  const { agent, user, setUser, setAgent } = useAuth()
+  const { agent, user, setUser, setAgent, coreUser } = useAuth()
   const navigate = useNavigate()
 
   const handleClick = (link: string) => {
     if(link.includes('agentDashboard')){
-      console.log('aasdas')
       const dateTo = moment().format('YYYY-MM-DD')
       const fromYear = moment().startOf('year').format('YYYY-MM-DD')
       navigate(`/agentDashboard/0/${user?.id}/${fromYear}/${dateTo}`)
@@ -82,16 +81,16 @@ const AgentMenuProfile: FC<AgentMenuProfileProps> = ({ handleClose }) => {
   }
 
   const handeOutAgent = () => {
-    setAgent(user)
+    setAgent(coreUser)
     navigate(URLS.AGENT_DASHBOARD.LINK)
   }
 
   return (
     <Box>
       <Box>
-        <Typography variant="h5">{agent?.name ?? user?.name}</Typography>
+        <Typography variant="h5">{agent?.name ?? coreUser?.name}</Typography>
       </Box>
-      {user?.id !== agent?.id  && (
+      {(coreUser?.id !== agent?.id && coreUser?.role === 'ROLE_SUPER_AGENT' && agent?.role === 'ROLE_AGENT')  && (
         <MenuItem sx={{ marginTop: '8px' }} onClick={() => handeOutAgent()}>
           <ListItemIcon>
             <TransferWithinAStationIcon color="error" />

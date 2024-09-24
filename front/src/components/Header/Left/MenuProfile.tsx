@@ -53,7 +53,7 @@ interface MenuProfile {
 const MenuProfile: FC<MenuProfile> = ({ handleClose }) => {
   const { modes, selectedMode, setSelectedMode, cart, setCart } = useCart()
   const { isMobile } = useMobile()
-  const { user, logOut, agent, setUser } = useAuth()
+  const { user, coreUser, logOut, agent, setUser } = useAuth()
   const navigate = useNavigate()
 
   const handleNaviagte = (link: string) => {
@@ -102,33 +102,34 @@ const MenuProfile: FC<MenuProfile> = ({ handleClose }) => {
       )
       if (ask) {
         setCart([])
-        setUser(agent)
+        setUser(coreUser)
         navigate(URLS.PROFILE.LINK)
         if (handleClose) {
           handleClose()
         }
       }
     } else {
-      setUser(agent)
+      setUser(coreUser)
       navigate(URLS.PROFILE.LINK)
       if (handleClose) {
         handleClose()
       }
     }
   }
-
+  
   return (
     <Box sx={{ padding: '12px' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box>
           <Typography variant={isMobile ? 'h6' : 'h5'}>
-            {(user ?? agent)?.name}
+            {user?.name}
           </Typography>
           <Typography variant="caption">{(user ?? agent)?.extId}</Typography>
         </Box>
-        {user?.id !== agent?.id && agent && (
-          <Chip label="לקוח" variant="outlined" color="info" />
-        )}
+        { user?.role === 'ROLE_USER' 
+        ? <Chip label="לקוח" variant="outlined" color="info" />
+        : <Chip label="סוכן" variant="outlined" color="info" />
+        }
       </Box>
       <Select
         fullWidth
@@ -146,7 +147,7 @@ const MenuProfile: FC<MenuProfile> = ({ handleClose }) => {
           }
         })}
       </Select>
-      {user?.id !== agent?.id && agent && (
+      {(user?.id !== agent?.id && user?.role === 'ROLE_USER') && (
         <MenuItem sx={{ marginTop: '8px' }} onClick={() => handleOutClinet()}>
           <ListItemIcon>
             <TransferWithinAStationIcon color="error" />
@@ -161,17 +162,23 @@ const MenuProfile: FC<MenuProfile> = ({ handleClose }) => {
       <Box sx={{ padding: '16px 0' }}>
         <Divider />
       </Box>
-      {Object.entries(clientURL).map(([key, value]) => (
-        <MenuItem key={key} onClick={() => handleNaviagte(value.LINK)}>
-          <ListItemIcon sx={{ width: '16px' }}>{value.ICON}</ListItemIcon>
-          <ListItemText>
-            <Typography variant="h6">{value.LABEL}</Typography>
-          </ListItemText>
-        </MenuItem>
-      ))}
-      <Box sx={{ padding: '16px 0' }}>
-        <Divider />
-      </Box>
+      {Object.entries(clientURL).map(([key, value]) => {
+        if(user?.role === 'ROLE_USER') {
+          return (
+            <MenuItem key={key} onClick={() => handleNaviagte(value.LINK)}>
+              <ListItemIcon sx={{ width: '16px' }}>{value.ICON}</ListItemIcon>
+              <ListItemText>
+                <Typography variant="h6">{value.LABEL}</Typography>
+              </ListItemText>
+            </MenuItem>
+          )
+        }
+      })}
+      {user?.role === 'ROLE_USER' &&
+          <Box sx={{ padding: '16px 0' }}>
+            <Divider />
+          </Box>
+      }
       <MenuItem onClick={() => handleLogOut()}>
         <ListItemIcon>
           <ExitToAppIcon color="error" />

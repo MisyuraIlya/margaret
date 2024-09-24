@@ -16,7 +16,9 @@ export const AdminClinetsService = {
     if (roleType == 'ROLE_SUPER_AGENT' || roleType === 'ROLE_AGENT')
       isAgent = true
     let url = `${process.env.REACT_APP_API}/api/users?page=${page}&isAgent=${isAgent}&isBlocked=false`
-
+    if(!isAgent){
+      url += `&role=ROLE_USER`
+    }
     if (search) {
       url += `&search=${search}`
     }
