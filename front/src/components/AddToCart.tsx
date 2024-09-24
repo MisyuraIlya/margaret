@@ -33,6 +33,10 @@ const AddToCart: FC<AddToCartProps> = ({ item }) => {
       onInfoAlert('לא ניתן להוסיף לסל', 'צריך להכנס למערכת')
       return
     }
+    if(user?.role !== 'ROLE_USER'){
+      onInfoAlert('לא ניתן להוסיף לסל', 'צריך להכנס ללקוח')
+      return
+    }
     if (settings.isWithStock) {
       if (item?.stock >= item.packQuantity || selectedMode.value === 'quote') {
         addToCart(item)
