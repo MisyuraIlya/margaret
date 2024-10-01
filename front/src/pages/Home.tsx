@@ -54,7 +54,7 @@ const HomePage = () => {
         return (
           <Container
             maxWidth="xl"
-            sx={{ marginBottom: isAuthrized ? '200px' : '0px' }}
+            sx={{ marginBottom: isAuthrized ? '50px' : '0px' }}
           >
             {isAuthrized && (
               <>
@@ -67,7 +67,7 @@ const HomePage = () => {
                   </Box>
                 )}
                 {element.type === 'productsNew' && element.isActive && (
-                  <Box sx={{ marginTop: '120px' }}>
+                  <Box>
                     {specialCatalog?.['hydra:member'] && (
                       <Home.Products
                         title={'מוצרים חדשים'}
@@ -82,7 +82,7 @@ const HomePage = () => {
                   </Box>
                 )}
                 {element.type === 'productsSale' && element.isActive && (
-                  <Box sx={{ marginTop: '120px' }}>
+                  <Box sx={{ marginTop: '60px' }}>
                     {newCatalog?.['hydra:member'] && (
                       <Home.Products
                         title={'מוצרים מיוחדים'}

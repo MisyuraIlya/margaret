@@ -1,7 +1,7 @@
 
 global.settings = {
-    title: "margaret",
-    description: "margaret",
+    title: "",
+    description: "",
     minimumPrice: 2000,
     deliveryPrice: 0,
     isWithStock: false,
