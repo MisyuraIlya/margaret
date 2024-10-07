@@ -11,6 +11,7 @@ const Logo = () => {
         style={{ cursor: 'pointer' }}
         src={`${process.env.REACT_APP_MEDIA}/logo.png`}
         width={100}
+        width={230}
         onClick={() => navigate(URLS.HOME.LINK)}
       />
     </Box>

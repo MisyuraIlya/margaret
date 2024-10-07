@@ -38,9 +38,9 @@ const CategoryNavBar = () => {
   return (
     <List
       sx={{
-        backgroundColor: themeColors.primary,
+        backgroundColor: 'white',
         minHeight: '30px',
-        color: 'white',
+        color: themeColors.primary,
         marginTop: '10px',
       }}
       onMouseLeave={() => setActive(0)}
@@ -75,7 +75,7 @@ const CategoryNavBar = () => {
                         whiteSpace: 'nowrap',
                         transition: 'color 0.3s ease',
                         '&:hover': {
-                          color: themeColors.secondary,
+                          color: themeColors.primary,
                         },
                       }}
                       onClick={() =>

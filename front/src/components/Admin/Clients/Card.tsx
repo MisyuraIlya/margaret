@@ -349,7 +349,7 @@ const Card: FC<ClientItemProps> = ({ element, index }) => {
               </Typography>
             </Grid>
           </Grid>
-          <form onSubmit={handleSubmit(handleUpdate)}>
+          <form onSubmit={handleSubmit(handleUpdate)} autoComplete="off">
             <FormControl fullWidth margin="normal">
               <Controller
                 name="email"
