@@ -8,6 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material'
 import { themeColors } from '../../../styles/mui'
@@ -18,6 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../store/auth.store'
 import hooks from '../../../hooks'
 import { URLS } from '../../../enums/urls'
+import Card from './Card'
 
 const List = () => {
   const { data, isLoading } = hooks.agent.useDataAgentClients()
@@ -58,6 +60,7 @@ const List = () => {
               <TableCell className="col-cont">כתובת</TableCell>
               <TableCell className="col-cont">עיר</TableCell>
               <TableCell className="col-cont">סטאטוס</TableCell>
+              <TableCell className="col-cont">מחזור</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -69,41 +72,7 @@ const List = () => {
                     className={'item'}
                     onClick={() => handleUser(element)}
                   >
-                    <TableCell>
-                      <Typography variant="body2">{element?.name}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body2">{element?.extId}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body2">{element?.phone}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body2">{element?.hp}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body2">
-                        {element?.maxObligo}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body2">
-                        {element?.maxCredit}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body2">
-                        {element?.address}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body2">{element?.city}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body2">
-                        {UserStatus(element)}
-                      </Typography>
-                    </TableCell>
+                    <Card element={element}/>
                   </TableRow>
                 )
               })}

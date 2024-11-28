@@ -42,13 +42,19 @@ const ModalWrapper: FC<ModalWrapperProps> = ({
   return (
     <>
       <Modal open={active} onClose={() => setActive(false)} disableAutoFocus>
-        <Box sx={style}>
+        <Box 
+          sx={style}
+          onClick={(event) => {
+            event.stopPropagation(); // Prevent click events from propagating to the Modal
+          }}
+          >
           <Box
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
               marginBottom: '20px',
             }}
+         
           >
             <Box>{component}</Box>
             <Box sx={{ height: '100%' }}>
