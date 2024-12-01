@@ -11,7 +11,7 @@ export const salesKeeperService = {
 
   async getSalesQuantityKeeperAlert(
     extId: string,
-  ): Promise<IQuantityKeeper> {
+  ): Promise<IQuantityKeeper[]> {
     let apiUrl = `${process.env.REACT_APP_API}/salesQuantityKeeperAlert/${extId}`
     const response = await axios.get(apiUrl)
     return response.data

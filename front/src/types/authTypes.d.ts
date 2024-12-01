@@ -27,6 +27,8 @@ interface IUser {
   taxCode: string
   agentId: IUser
   isAgent: boolean
+  city: string 
+  address: string
 }
 
 interface IAtarim {

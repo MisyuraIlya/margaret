@@ -115,4 +115,11 @@ export const AuthService = {
     })
     return response.data
   },
+
+  async getMoneyUser(
+    userExtId: string,
+  ): Promise<IMoney> {
+    const response = await axios.get(`${process.env.REACT_APP_API}/user/moneyInfo/${userExtId}`)
+    return response.data
+  },
 }

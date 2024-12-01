@@ -92,7 +92,7 @@ const Card: FC<ICardProps> = ({ element }) => {
             <TableCell sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 {handleSales()}
             </TableCell>
-            <SalesKeeper active={open} setActive={setOpen} />
+            <SalesKeeper active={open} setActive={setOpen} user={element}/>
         </>
     );
 };
