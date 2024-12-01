@@ -58,9 +58,9 @@ const QuantityKeeper = ({ extId }: { extId: string }) => {
               <TableRow key={row.sku}>
                 <TableCell align="left">{row.sku}</TableCell>
                 <TableCell align="left">{row.productDescription}</TableCell>
-                <TableCell align="left">{'₪' + numberWithCommas(row.sumPreviousMonthCurrentYear)}</TableCell>
-                <TableCell align="left">{'₪' + numberWithCommas(row.averageLastThreeMonths)}</TableCell>
-                <TableCell align="left">{'₪' + numberWithCommas(row.sumPreviousMonthPreviousYear)}</TableCell>
+                <TableCell align="left">{numberWithCommas(row.sumPreviousMonthCurrentYear)}</TableCell>
+                <TableCell align="left">{numberWithCommas(row.averageLastThreeMonths)}</TableCell>
+                <TableCell align="left">{numberWithCommas(row.sumPreviousMonthPreviousYear)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
