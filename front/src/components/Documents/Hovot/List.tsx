@@ -14,6 +14,7 @@ import {
 } from '@mui/material'
 import moment from 'moment'
 import hooks from '../../../hooks'
+import { numberWithCommas } from '../../../helpers/numberWithCommas'
 
 const List = () => {
   const { data, isLoading } = hooks.useDataHovot()
@@ -80,12 +81,12 @@ const List = () => {
                       </TableCell>
                       <TableCell>
                         <Typography variant="body2">
-                          {element?.debit} ₪
+                          {numberWithCommas(element?.debit)} ₪
                         </Typography>
                       </TableCell>
                       <TableCell>
                         <Typography variant="body2">
-                          {element?.lineSum} ₪
+                          {numberWithCommas(element?.lineSum)} ₪
                         </Typography>
                       </TableCell>
                       <TableCell>
@@ -94,7 +95,18 @@ const List = () => {
                         </Typography>
                       </TableCell>
                       <TableCell>
-                        <Typography variant="body2">{daysDiff} ימים</Typography>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            direction:'rtl',
+                            color:
+                              typeof daysDiff === 'number' && daysDiff < 0
+                                ? 'error.main' // Set color to red if daysDiff is negative
+                                : 'text.primary', // Default color
+                          }}
+                        >
+                          {daysDiff} ימים
+                        </Typography>
                       </TableCell>
                     </TableRow>
                   )

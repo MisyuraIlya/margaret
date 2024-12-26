@@ -22,6 +22,8 @@ import { useMobile } from '../../../provider/MobileProvider'
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange'
 import PriceChangeIcon from '@mui/icons-material/PriceChange'
 import AssignmentIcon from '@mui/icons-material/Assignment'
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 
 const clientURL = {
   PROFILE: {
@@ -43,6 +45,16 @@ const clientURL = {
     LINK: URLS.GIUL_HOVOT.LINK,
     LABEL: URLS.GIUL_HOVOT.LABEL,
     ICON: <CurrencyExchangeIcon sx={{ width: '20px' }} />,
+  },
+  PRODUCTS_IM_BUY: {
+    LINK: '/client/imBuy/0/0/0?page=1',
+    LABEL: 'מוצרים שאני קונה',
+    ICON: <ShoppingBasketIcon sx={{ width: '20px' }} />,
+  },
+  PRODUCTS_IM_NOT_BUY: {
+    LINK: '/client/notBuy/0/0/0?page=1',
+    LABEL: 'מוצרים שאני לא קונה',
+    ICON: <RemoveShoppingCartIcon sx={{ width: '20px' }} />,
   },
 }
 

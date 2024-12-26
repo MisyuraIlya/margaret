@@ -55,13 +55,13 @@ const Product: FC<ProductPopUpProps> = ({ active, setActive }) => {
           >
             <InsertLinkIcon />
           </Button>
-          <Button
+          {/* <Button
             variant="outlined"
             sx={{ minWidth: '40px', p: '5px' }}
             onClick={() => share()}
           >
             <ShareIcon />
-          </Button>
+          </Button> */}
           {user && (
             <Button
               variant="outlined"

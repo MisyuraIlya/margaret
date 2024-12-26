@@ -9,7 +9,7 @@ import hooks from '../hooks'
 import { useMobile } from '../provider/MobileProvider'
 
 const Catalog = () => {
-  const { lvl1, lvl2, lvl3 } = useParams()
+  const { lvl1, lvl2, lvl3 , documentType } = useParams()
   const { data } = hooks.useDataCategories()
   const { isMobile } = useMobile()
   const { hydraPagination, data: catalog } = hooks.useDataCatalog()
@@ -17,6 +17,25 @@ const Catalog = () => {
   const res1 = findCategoryTitleById(+lvl1!, categoriesArray)
   const res2 = findCategoryTitleById(+lvl2!, categoriesArray)
   const res3 = findCategoryTitleById(+lvl3!, categoriesArray)
+
+  const handleTitleTpye = () => {
+    if(documentType === 'catalog') {
+      return 'קטלוג'
+    } else if(documentType === 'notBuy') {
+      return 'מוצרים שאני לא קונה'
+    } else if(documentType === 'imBuy') {
+      return 'מוצרים שאני קונה'
+    } else if(documentType === 'search') {
+      return 'חיפוש'
+    } else if(documentType === 'special') {
+      return 'מיוחדים'
+    } else if(documentType === 'new') {
+      return 'חדש'
+    } else {
+      return ''
+    }
+  } 
+
   const handleTitle = () => {
     if (res3) {
       return res3
@@ -31,6 +50,9 @@ const Catalog = () => {
 
   return (
     <Container maxWidth="xl" sx={{ marginTop: '50px' }}>
+      <Typography variant='h6' color={'primary'}>
+        {handleTitleTpye()}
+      </Typography>
       <Utils.BreadCrumbsUtil
         array={[
           {

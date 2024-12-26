@@ -115,7 +115,14 @@ const Categories: FC<CategoriesProps> = ({ toShow, toShowMobile }) => {
                   <CardActionArea>
                     <Box>
                       <CardMedia
-                        sx={{ objectFit: 'cover', height: '190px' }}
+                        sx={{ 
+                          objectFit: 'cover', 
+                          height: '190px',
+                          transition: 'transform 0.3s ease-in-out',
+                          '&:hover': {
+                            transform: 'scale(1.1)',
+                          },
+                         }}
                         component="img"
                         image={
                           element?.MediaObject?.filePath

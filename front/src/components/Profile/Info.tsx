@@ -155,7 +155,7 @@ const Info = () => {
                 {'חוב פתוח'}
               </Typography>
             </Box>
-            <Typography variant="subtitle2" sx={{ pt: '8px' }}>
+            <Typography variant="subtitle2" sx={{ pt: '8px' }} color={'error'}>
               {money?.openDeibt ? '₪' + numberWithCommas(money?.openDeibt) : '-'}
             </Typography>
           </Grid>

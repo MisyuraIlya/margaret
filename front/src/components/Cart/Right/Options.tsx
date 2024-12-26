@@ -10,11 +10,12 @@ import FileUploadIcon from '@mui/icons-material/FileUpload'
 import { useAuth } from '../../../store/auth.store'
 import { themeColors } from '../../../styles/mui'
 import { useMobile } from '../../../provider/MobileProvider'
+import { URLS } from '../../../enums/urls'
 
 const Options = () => {
   const { cart, setCart, selectedMode, saveDraft } = useCart()
   const { isMobile } = useMobile()
-  const { user } = useAuth()
+  const { user,agent } = useAuth()
   const navigate = useNavigate()
   let from = moment().subtract(1, 'months').format('YYYY-MM-DD')
   let to = moment().format('YYYY-MM-DD')
@@ -23,6 +24,9 @@ const Options = () => {
     const ask = await onAsk('האם אתה בטוח?', 'כל המוצרים בעגלה יימחקו')
     if (ask) {
       setCart([])
+      if(agent){
+        navigate(`${URLS.AGENT_CLIENTS.LINK}/${agent?.id}?page=1`)
+      }
     }
   }
 

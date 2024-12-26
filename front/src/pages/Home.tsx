@@ -83,18 +83,18 @@ const HomePage = () => {
                 )}
                 {element.type === 'productsSale' && element.isActive && (
                   <Box sx={{ marginTop: '60px' }}>
-                    {newCatalog?.['hydra:member'] && (
-                      <Home.Products
-                        title={'מוצרים מיוחדים'}
-                        array={newCatalog?.['hydra:member']}
-                        toShow={element.count}
-                        toShowInMobile={element.countMobile}
-                        column={1}
-                        link="/client/special/1/0/0?page=1"
-                        loading={newLoading}
-                      />
-                    )}
-                  </Box>
+                  {newCatalog?.['hydra:member'] && (
+                    <Home.Products
+                      title={'מוצרים מיוחדים'}
+                      array={newCatalog['hydra:member'].slice(0, 10)} 
+                      toShow={element.count}
+                      toShowInMobile={element.countMobile}
+                      column={1}
+                      link="/client/special/1/0/0?page=1"
+                      loading={newLoading}
+                    />
+                  )}
+                </Box>
                 )}
               </>
             )}

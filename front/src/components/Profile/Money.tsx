@@ -87,7 +87,7 @@ const Money = () => {
             <Typography variant="h6" color={themeColors.asphalt}>
               {"חוב פתוח"}
             </Typography>
-            <Typography variant="body1">{money?.openDeibt ? '₪' + numberWithCommas(money?.openDeibt) : '-'}</Typography>
+            <Typography variant="body1" color={'error'}>{money?.openDeibt ? '₪' + numberWithCommas(money?.openDeibt) : '-'}</Typography>
           </Grid>
 
           <Grid item sm={1.5} xs={6}>

@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-const dateFrom = moment().subtract(1, 'day').format('YYYY-MM-DD')
+const dateFrom = moment().subtract(6, 'month').format('YYYY-MM-DD')
 const dateTo = moment().format('YYYY-MM-DD')
 
 const fromYear = moment().startOf('year').format('YYYY-MM-DD')
