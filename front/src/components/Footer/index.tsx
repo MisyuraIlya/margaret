@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Container,
   Grid,
@@ -7,19 +7,14 @@ import {
   Button,
   Box,
   FormControl,
+  CircularProgress,
 } from '@mui/material'
 import { themeColors, colors } from '../../styles/mui'
 import { useForm, Controller } from 'react-hook-form'
 import { useMobile } from '../../provider/MobileProvider'
 import { useAuthProvider } from '../../provider/AuthProvider'
-
-type form = {
-  firstName: string
-  lastName: string
-  phone: string
-  email: string
-  description: string
-}
+import { SupportService } from '../../services/support.service'
+import { onErrorAlert, onSuccessAlert } from '../../utils/MySweetAlert'
 
 const Footer = () => {
   const {
@@ -27,10 +22,25 @@ const Footer = () => {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<form>()
+    reset,
+  } = useForm<ISupportDto>()
 
   const { isAuthrized } = useAuthProvider()
   const { isMobile } = useMobile()
+  const [loading, setLoading] = useState(false)
+
+  const onSubmit = (data: ISupportDto) => {
+    setLoading(true)
+    const res = SupportService.sendSupport(data).then((res) => {
+      setLoading(false)
+      if(res.status === 'success') {
+        reset()
+        onSuccessAlert('הודעה נשלחה בהצלחה','')
+      } else {
+        onErrorAlert('שגיאה בשליחת הודעה','')
+      }
+    })
+  }
 
   return (
     <Box
@@ -46,13 +56,12 @@ const Footer = () => {
       <Container maxWidth={'xl'} component={'footer'}>
         <Box sx={{ minHeight: '400px' }}>
           <Grid container spacing={5}>
-            <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={4}>
               <Box
                 sx={{
                   color: 'white',
                   bgcolor: colors.alpha.white[5],
                   paddingBottom: isMobile ? '20px' : '0px',
-                  height: '400px',
                   mb: '0px',
                 }}
               >
@@ -60,196 +69,236 @@ const Footer = () => {
                   <Typography variant="h5">
                     יש לכם שאלות? תצרו איתנו קשר
                   </Typography>
-                  <Box sx={{ display: 'flex', gap: '24px' }}>
-                    <FormControl fullWidth margin="normal">
-                      <Controller
-                        name="firstName"
-                        control={control}
-                        defaultValue=""
-                        rules={{
-                          required: 'שם שדה חובה',
-                        }}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            variant="standard"
-                            label="שם מלא"
-                            placeholder="שם מלא"
-                            type="text"
-                            error={!!errors.firstName}
-                            helperText={errors.firstName?.message}
-                            sx={{
-                              color: 'white',
-                              '& .MuiInput-underline:before': {
-                                borderBottomColor: 'white',
-                              },
-                              '& .MuiInput-underline:hover:before': {
-                                borderBottomColor: 'white',
-                              },
-                              '& .MuiInputBase-input': {
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <Box sx={{ display: 'flex', gap: '24px' }}>
+                      <FormControl fullWidth margin="normal">
+                        <Controller
+                          name="name"
+                          control={control}
+                          defaultValue=""
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              variant="standard"
+                              label="שם מלא"
+                              placeholder="שם מלא"
+                              type="text"
+                              error={!!errors.name}
+                              helperText={errors.name?.message}
+                              sx={{
                                 color: 'white',
-                              },
-                            }}
-                            InputLabelProps={{ style: { color: 'white' } }}
-                          />
-                        )}
-                      />
-                    </FormControl>
-                    <FormControl fullWidth margin="normal">
-                      <Controller
-                        name="lastName"
-                        control={control}
-                        defaultValue=""
-                        rules={{
-                          required: 'מספר טלפון לקוח שדה חובה',
-                        }}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            variant="standard"
-                            label="מספר טלפון"
-                            placeholder="מספר טלפון"
-                            type="text"
-                            error={!!errors.lastName}
-                            helperText={errors.lastName?.message}
-                            sx={{
-                              color: 'white',
-                              '& .MuiInput-underline:before': {
-                                borderBottomColor: 'white',
-                              },
-                              '& .MuiInput-underline:hover:before': {
-                                borderBottomColor: 'white',
-                              },
-                              '& .MuiInputBase-input': {
-                                color: 'white',
-                              },
-                            }}
-                            InputLabelProps={{ style: { color: 'white' } }}
-                          />
-                        )}
-                      />
-                    </FormControl>
-                  </Box>
-                  <Box sx={{ display: 'flex', gap: '24px' }}>
-                    <FormControl fullWidth margin="normal">
-                      <Controller
-                        name="firstName"
-                        control={control}
-                        defaultValue=""
-                        rules={{
-                          required: 'מייל שדה חובה',
-                        }}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            variant="standard"
-                            label="מייל"
-                            placeholder="מייל"
-                            type="text"
-                            error={!!errors.firstName}
-                            helperText={errors.firstName?.message}
-                            sx={{
-                              color: 'white',
-                              '& .MuiInput-underline:before': {
-                                borderBottomColor: 'white',
-                              },
-                              '& .MuiInput-underline:hover:before': {
-                                borderBottomColor: 'white',
-                              },
-                              '& .MuiInputBase-input': {
-                                color: 'white',
-                              },
-                            }}
-                            InputLabelProps={{ style: { color: 'white' } }}
-                          />
-                        )}
-                      />
-                    </FormControl>
-                    <FormControl fullWidth margin="normal">
-                      <Controller
-                        name="lastName"
-                        control={control}
-                        defaultValue=""
-                        rules={{
-                          required: 'מספר לקוח שדה חובה',
-                        }}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            variant="standard"
-                            label="מספר לקוח פנימי*"
-                            placeholder="הכנס את המספר שלך"
-                            type="text"
-                            error={!!errors.lastName}
-                            helperText={errors.lastName?.message}
-                            sx={{
-                              color: 'white',
-                              '& .MuiInput-underline:before': {
-                                borderBottomColor: 'white',
-                              },
-                              '& .MuiInput-underline:hover:before': {
-                                borderBottomColor: 'white',
-                              },
-                              '& .MuiInputBase-input': {
-                                color: 'white',
-                              },
-                            }}
-                            InputLabelProps={{ style: { color: 'white' } }}
-                          />
-                        )}
-                      />
-                    </FormControl>
-                  </Box>
-                  <FormControl fullWidth margin="normal">
-                    <Controller
-                      name="firstName"
-                      control={control}
-                      defaultValue=""
-                      rules={{
-                        required: 'מספר לקוח שדה חובה',
-                      }}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          variant="standard"
-                          label="הודעה"
-                          placeholder="הודעה"
-                          multiline
-                          rows={2}
-                          type="text"
-                          error={!!errors.firstName}
-                          helperText={errors.firstName?.message}
-                          sx={{
-                            color: 'white',
-                            '& .MuiInput-underline:before': {
-                              borderBottomColor: 'white',
-                            },
-                            '& .MuiInput-underline:hover:before': {
-                              borderBottomColor: 'white',
-                            },
-                            '& .MuiInputBase-input': {
-                              color: 'white',
+                                '& .MuiInput-underline:before': {
+                                  borderBottomColor: 'white',
+                                },
+                                '& .MuiInput-underline:hover:before': {
+                                  borderBottomColor: 'white',
+                                },
+                                '& .MuiInputBase-input': {
+                                  color: 'white',
+                                },
+                              }}
+                              InputLabelProps={{ style: { color: 'white' } }}
+                            />
+                          )}
+                        />
+                      </FormControl>
+                      <FormControl fullWidth margin="normal">
+                        <Controller
+                          name="phone"
+                          control={control}
+                          defaultValue=""
+                          rules={{
+                            required: 'מספר טלפון לקוח שדה חובה',
+                            pattern: {
+                              value: /^[0-9]{10}$/, 
+                              message: 'מספר טלפון לא תקין',
                             },
                           }}
-                          InputLabelProps={{ style: { color: 'white' } }}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              variant="standard"
+                              label="*מספר טלפון"
+                              placeholder="*מספר טלפון"
+                              type="text"
+                              error={!!errors.phone}
+                              helperText={errors.phone?.message}
+                              sx={{
+                                color: 'white',
+                                '& .MuiInput-underline:before': {
+                                  borderBottomColor: 'white',
+                                },
+                                '& .MuiInput-underline:hover:before': {
+                                  borderBottomColor: 'white',
+                                },
+                                '& .MuiInputBase-input': {
+                                  color: 'white',
+                                },
+                              }}
+                              InputLabelProps={{ style: { color: 'white' } }}
+                            />
+                          )}
                         />
-                      )}
-                    />
-                  </FormControl>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      bgcolor: 'white',
-                      width: '150px',
-                      color: themeColors.primary,
-                      mt: '24px',
-                      '&:hover': {
-                        bgcolor: '#eeeeee',
-                      },
-                    }}
-                  >
-                    שלח
-                  </Button>
+                      </FormControl>
+                    </Box>
+                    <Box sx={{ display: 'flex', gap: '24px' }}>
+                      <FormControl fullWidth margin="normal">
+                        <Controller
+                          name="email"
+                          control={control}
+                          defaultValue=""
+                          rules={{
+                            pattern: {
+                              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, 
+                              message: 'מייל לא תקין',
+                            },
+                          }}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              variant="standard"
+                              label="מייל"
+                              placeholder="מייל"
+                              type="text"
+                              error={!!errors.email}
+                              helperText={errors.email?.message}
+                              sx={{
+                                color: 'white',
+                                '& .MuiInput-underline:before': {
+                                  borderBottomColor: 'white',
+                                },
+                                '& .MuiInput-underline:hover:before': {
+                                  borderBottomColor: 'white',
+                                },
+                                '& .MuiInputBase-input': {
+                                  color: 'white',
+                                },
+                              }}
+                              InputLabelProps={{ style: { color: 'white' } }}
+                            />
+                          )}
+                        />
+                      </FormControl>
+                      <FormControl fullWidth margin="normal">
+                        <Controller
+                          name="userExtId"
+                          control={control}
+                          defaultValue=""
+                      
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              variant="standard"
+                              label="מספר לקוח פנימי"
+                              placeholder="הכנס את המספר שלך"
+                              type="text"
+                              error={!!errors.userExtId}
+                              helperText={errors.userExtId?.message}
+                              sx={{
+                                color: 'white',
+                                '& .MuiInput-underline:before': {
+                                  borderBottomColor: 'white',
+                                },
+                                '& .MuiInput-underline:hover:before': {
+                                  borderBottomColor: 'white',
+                                },
+                                '& .MuiInputBase-input': {
+                                  color: 'white',
+                                },
+                              }}
+                              InputLabelProps={{ style: { color: 'white' } }}
+                            />
+                          )}
+                        />
+                      </FormControl>
+                    </Box>
+                    <FormControl fullWidth margin="normal">
+                      <Controller
+                        name="bussnies"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            variant="standard"
+                            label="שם העסק"
+                            placeholder="שם העסק"
+                            type="text"
+                            error={!!errors.bussnies}
+                            helperText={errors.bussnies?.message}
+                            sx={{
+                              color: 'white',
+                              '& .MuiInput-underline:before': {
+                                borderBottomColor: 'white',
+                              },
+                              '& .MuiInput-underline:hover:before': {
+                                borderBottomColor: 'white',
+                              },
+                              '& .MuiInputBase-input': {
+                                color: 'white',
+                              },
+                            }}
+                            InputLabelProps={{ style: { color: 'white' } }}
+                          />
+                        )}
+                      />
+                    </FormControl>
+                    <FormControl fullWidth margin="normal">
+                      <Controller
+                        name="message"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            variant="standard"
+                            label="הודעה"
+                            placeholder="הודעה"
+                            multiline
+                            rows={2}
+                            type="text"
+                            error={!!errors.message}
+                            helperText={errors.message?.message}
+                            sx={{
+                              color: 'white',
+                              '& .MuiInput-underline:before': {
+                                borderBottomColor: 'white',
+                              },
+                              '& .MuiInput-underline:hover:before': {
+                                borderBottomColor: 'white',
+                              },
+                              '& .MuiInputBase-input': {
+                                color: 'white',
+                              },
+                            }}
+                            InputLabelProps={{ style: { color: 'white' } }}
+                          />
+                        )}
+                      />
+                    </FormControl>
+                    {loading ?
+                    <Box sx={{display:'flex', justifyContent:'center', alignContent:'center', padding:'10px'}}>
+                      <CircularProgress color='info'/>
+                    </Box>
+                    :
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      sx={{
+                        bgcolor: 'white',
+                        width: '150px',
+                        color: themeColors.primary,
+                        mt: '24px',
+                        '&:hover': {
+                          bgcolor: '#eeeeee',
+                        },
+                      }}
+                    >
+                      שלח
+                    </Button>
+                    }
+ 
+                  </form>
                 </Box>
               </Box>
             </Grid>
