@@ -1,38 +1,46 @@
-import React, { useEffect, useState } from 'react'
-import Utils from '../../../utils'
+import React, { useState, useEffect } from 'react';
+import Utils from '../../../utils';
 import {
   Box,
-  Button,
   Collapse,
   Divider,
   Drawer,
   Grid,
   IconButton,
   List,
+  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   ListSubheader,
   ToggleButton,
   ToggleButtonGroup,
-} from '@mui/material'
-import FilterAltIcon from '@mui/icons-material/FilterAlt'
-import ExpandLess from '@mui/icons-material/ExpandLess'
-import ExpandMore from '@mui/icons-material/ExpandMore'
-import CloseIcon from '@mui/icons-material/Close'
-import { useCatalog } from '../../../store/catalog.store'
-import hooks from '../../../hooks'
-import { useNavigate } from 'react-router-dom'
-import { useDebounce } from 'use-debounce'
-import GridViewIcon from '@mui/icons-material/GridView'
-import TocIcon from '@mui/icons-material/Toc'
+  Checkbox,
+  Button,
+} from '@mui/material';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import CloseIcon from '@mui/icons-material/Close';
+import GridViewIcon from '@mui/icons-material/GridView';
+import TocIcon from '@mui/icons-material/Toc';
+import useDataCatalog from '../../../hooks/useDataCatalog';
+import hooks from '../../../hooks';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useDebounce } from 'use-debounce';
+import { useCatalog } from '../../../store/catalog.store';
 
-const MobileFIlter = () => {
-  const [search, setSearch] = useState<string>('')
-  const [openDrawver, setOpenDrawver] = useState(false)
-  const [openOrden, setOpenOrden] = useState(false)
-  const [openProd, setOpenProds] = useState(false)
-  const [searchDebounce] = useDebounce(search, 1000)
+const MobileFilterWithAttributes = () => {
+  const [search, setSearch] = useState<string>('');
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [openOrden, setOpenOrden] = useState(false);
+  const [openProd, setOpenProd] = useState(false);
+  const [openFilters, setOpenFilters] = useState<Record<string, boolean>>({});
+  const [searchDebounce] = useDebounce(search, 1000);
+  const { data } = useDataCatalog();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [localSelectedValues, setLocalSelectedValues] = useState<Record<string, string[]>>({});
+  const [filters, setFilters] = useState<IAttributeMain[]>([]);
 
   const {
     listView,
@@ -43,61 +51,116 @@ const MobileFIlter = () => {
     setSortProdSetting,
     sortArr,
     prodsPerPageArr,
-  } = useCatalog()
+  } = useCatalog();
 
-  const { mutate } = hooks.useDataCatalog()
+  const { mutate } = hooks.useDataCatalog();
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
+  // Sync filters from data
+  useEffect(() => {
+    if (data?.['hydra:filter']) {
+      setFilters((prevFilters) => {
+        const newFilters = data['hydra:filter'];
+        const preservedValues = prevFilters.reduce<Record<string, string[]>>((acc, filter) => {
+          if (newFilters.find((newFilter: IAttributeMain) => newFilter.id === filter.id)) {
+            acc[filter.id] = localSelectedValues[filter.id] || [];
+          }
+          return acc;
+        }, {});
+        setLocalSelectedValues((prev) => ({ ...prev, ...preservedValues }));
+        return newFilters;
+      });
+    }
+  }, [data]);
+
+  // Sync local state with URL query params
+  useEffect(() => {
+    const initialValues: Record<string, string[]> = {};
+    filters.forEach((item) => {
+      const values = searchParams.getAll(`filter[${item.id}]`);
+      if (values.length > 0) {
+        initialValues[item.id] = values;
+      }
+    });
+    setLocalSelectedValues(initialValues);
+  }, [filters, searchParams]);
 
   const handleSearchValue = (value: string) => {
-    const urlSearchParams = new URLSearchParams(location.search)
-    urlSearchParams.set('page', '1')
+    const urlSearchParams = new URLSearchParams(location.search);
+    urlSearchParams.set('page', '1');
     if (value) {
-      urlSearchParams.set('search', value)
+      urlSearchParams.set('search', value);
     } else {
-      urlSearchParams.delete('search')
+      urlSearchParams.delete('search');
     }
-    const updatedUrl = '?' + urlSearchParams.toString()
-    navigate(location.pathname + updatedUrl)
-    mutate()
-  }
+    const updatedUrl = '?' + urlSearchParams.toString();
+    navigate(location.pathname + updatedUrl);
+    mutate();
+  };
 
   const handleChangeItemsPerPage = (value: string) => {
-    const urlSearchParams = new URLSearchParams(location.search)
-    urlSearchParams.set('itemsPerPage', value)
-    urlSearchParams.set('page', '1')
-    const updatedUrl = '?' + urlSearchParams.toString()
-    setProdsPerPage(value)
-    navigate(location.pathname + updatedUrl)
-    mutate()
-  }
+    const urlSearchParams = new URLSearchParams(location.search);
+    urlSearchParams.set('itemsPerPage', value);
+    urlSearchParams.set('page', '1');
+    const updatedUrl = '?' + urlSearchParams.toString();
+    setProdsPerPage(value);
+    navigate(location.pathname + updatedUrl);
+    mutate();
+  };
 
   const handleOrderBy = (value: string) => {
-    setSortProdSetting(value)
-    if (value == 'שם') {
-      value = 'title'
-    } else if (value == 'מומלץ') {
-      value = 'isSpecial'
-    } else if (value == 'חדש') {
-      value = 'isNew'
+    setSortProdSetting(value);
+    if (value === 'שם') {
+      value = 'title';
+    } else if (value === 'מומלץ') {
+      value = 'isSpecial';
+    } else if (value === 'חדש') {
+      value = 'isNew';
     }
-    const urlSearchParams = new URLSearchParams(location.search)
-    urlSearchParams.set('orderBy', value)
-    const updatedUrl = '?' + urlSearchParams.toString()
-    navigate(location.pathname + updatedUrl)
-    mutate()
-  }
+    const urlSearchParams = new URLSearchParams(location.search);
+    urlSearchParams.set('orderBy', value);
+    const updatedUrl = '?' + urlSearchParams.toString();
+    navigate(location.pathname + updatedUrl);
+    mutate();
+  };
 
   const handleAlignment = (
     event: React.MouseEvent<HTMLElement>,
     newAlignment: string | null
   ) => {
-    setListView(newAlignment as typeMode)
-  }
+    setListView(newAlignment as any);
+  };
+
+  const handleChange = (id: number, value: string) => {
+    setLocalSelectedValues((prev) => {
+      const currentValues = prev[id] || [];
+      const newValues = currentValues.includes(value)
+        ? currentValues.filter((v) => v !== value)
+        : [...currentValues, value];
+
+      // Update search params
+      const updatedParams = new URLSearchParams(searchParams.toString());
+      updatedParams.delete(`filter[${id}]`);
+      newValues.forEach((val) => updatedParams.append(`filter[${id}]`, val));
+      setSearchParams(updatedParams);
+
+      return {
+        ...prev,
+        [id]: newValues,
+      };
+    });
+  };
+
+  const toggleFilter = (id: string) => {
+    setOpenFilters((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   useEffect(() => {
-    handleSearchValue(searchDebounce)
-  }, [searchDebounce])
+    handleSearchValue(searchDebounce);
+  }, [searchDebounce]);
 
   return (
     <>
@@ -116,7 +179,7 @@ const MobileFIlter = () => {
         </Grid>
         <Grid item xs={2}>
           <Button
-            onClick={() => setOpenDrawver(true)}
+            onClick={() => setOpenDrawer(true)}
             variant="contained"
             sx={{
               padding: '0px',
@@ -141,20 +204,17 @@ const MobileFIlter = () => {
           >
             <ToggleButton value="grid">
               <GridViewIcon
-                sx={{ color: listView == 'grid' ? 'white' : 'black' }}
+                sx={{ color: listView === 'grid' ? 'white' : 'black' }}
               />
             </ToggleButton>
             <ToggleButton value="list">
-              <TocIcon sx={{ color: listView == 'list' ? 'white' : 'black' }} />
+              <TocIcon sx={{ color: listView === 'list' ? 'white' : 'black' }} />
             </ToggleButton>
           </ToggleButtonGroup>
         </Grid>
       </Grid>
-      <Drawer
-        anchor="bottom"
-        open={openDrawver}
-        onClose={() => setOpenDrawver(false)}
-      >
+
+      <Drawer anchor="bottom" open={openDrawer} onClose={() => setOpenDrawer(false)}>
         <Box sx={{ height: '100vh', width: '100%' }}>
           <List
             sx={{ width: '100%', bgcolor: 'background.paper' }}
@@ -168,8 +228,8 @@ const MobileFIlter = () => {
                   padding: '16px',
                 }}
               >
-                <Box>מסננים</Box>
-                <IconButton onClick={() => setOpenDrawver(false)}>
+                <Box>Filters</Box>
+                <IconButton onClick={() => setOpenDrawer(false)}>
                   <CloseIcon />
                 </IconButton>
               </ListSubheader>
@@ -210,7 +270,7 @@ const MobileFIlter = () => {
               </List>
             </Collapse>
 
-            <ListItemButton onClick={() => setOpenProds(!openProd)}>
+            <ListItemButton onClick={() => setOpenProd(!openProd)}>
               <ListItemText
                 primary="מוצרים:"
                 secondary={prodsPerPage}
@@ -242,11 +302,41 @@ const MobileFIlter = () => {
                 ))}
               </List>
             </Collapse>
+
+            {filters.map((filter) => (
+              <React.Fragment key={filter.id}>
+                <ListItemButton onClick={() => toggleFilter(filter.id.toString())}>
+                  <ListItemText
+                    primary={filter.title}
+                    secondary={
+                      (localSelectedValues[filter.id] || []).length > 0
+                        ? `${localSelectedValues[filter.id].length} נבחרו`
+                        : ' לא נבחר'
+                    }
+                  />
+                  {openFilters[filter.id] ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+
+                <Collapse in={openFilters[filter.id]} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {filter.SubAttributes?.map((subItem) => (
+                      <ListItem key={subItem.id} sx={{ pl: 4 }}>
+                        <Checkbox
+                          checked={(localSelectedValues[filter.id] || []).includes(subItem.id.toString())}
+                          onChange={() => handleChange(filter.id, subItem.id.toString())}
+                        />
+                        <ListItemText primary={subItem.title} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Collapse>
+              </React.Fragment>
+            ))}
           </List>
         </Box>
       </Drawer>
     </>
-  )
-}
+  );
+};
 
-export default MobileFIlter
+export default MobileFilterWithAttributes;

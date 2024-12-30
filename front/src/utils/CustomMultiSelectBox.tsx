@@ -35,6 +35,7 @@ const CustomMultiSelectBox: FC<CustomMultiSelectBoxProps> = ({
   return (
     <Select
       multiple
+      displayEmpty
       sx={{
         minWidth: '200px',
         '& .MuiOutlinedInput-notchedOutline': {
@@ -48,7 +49,9 @@ const CustomMultiSelectBox: FC<CustomMultiSelectBoxProps> = ({
           <Typography fontWeight={600} lineHeight={'12px'}>
             {label}:
           </Typography>
-          <Typography>{selectedLabels.join(', ')}</Typography>
+          <Typography>
+            {selectedLabels.length > 0 ? selectedLabels.join(', ') : <span>בחירה</span>}
+          </Typography>
         </Box>
       )}
     >

@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import CustomMultiSelectBox from '../../../utils/CustomMultiSelectBox';
 
 const Attributes = () => {
-  const { data } = useDataCatalog(); // Fetch catalog data, including filters
+  const { data } = useDataCatalog();
   const [searchParams, setSearchParams] = useSearchParams();
   const [localSelectedValues, setLocalSelectedValues] = useState<Record<string, string[]>>({});
   const [filters, setFilters] = useState<IAttributeMain[]>([]);
@@ -15,7 +15,6 @@ const Attributes = () => {
     if (data?.['hydra:filter']) {
       setFilters((prevFilters) => {
         const newFilters = data['hydra:filter'];
-        // Preserve selected values for removed filters
         const preservedValues = prevFilters.reduce<Record<string, string[]>>((acc, filter) => {
           if (newFilters.find((newFilter: IAttributeMain) => newFilter.id === filter.id)) {
             acc[filter.id] = localSelectedValues[filter.id] || [];
@@ -54,18 +53,20 @@ const Attributes = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{display:'flex'}}>
       {filters.map((item) => (
-        <CustomMultiSelectBox
-          key={item.id}
-          label={item.title}
-          values={localSelectedValues[item.id] || []}
-          onChange={(values) => handleChange(item.id, values)}
-          options={item.SubAttributes?.map((subItem) => ({
-            value: subItem.id.toString(),
-            label: subItem.title,
-          })) || []}
-        />
+        <Box key={item.id} sx={{padding:'10px'}}>
+            <CustomMultiSelectBox
+            key={item.id}
+            label={item.title}
+            values={localSelectedValues[item.id] || []}
+            onChange={(values) => handleChange(item.id, values)}
+            options={item.SubAttributes?.map((subItem) => ({
+                value: subItem.id.toString(),
+                label: subItem.title,
+            })) || []}
+            />
+        </Box>
       ))}
     </Box>
   );
