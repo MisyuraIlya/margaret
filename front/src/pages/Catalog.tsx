@@ -88,7 +88,10 @@ const Catalog = () => {
           {isMobile ? (
             <CatalogComponent.Left.MobileFIlter />
           ) : (
-            <CatalogComponent.Left.Filter />
+            <Box>
+              <CatalogComponent.Left.Filter />
+              <CatalogComponent.Left.Attributes />
+            </Box>
           )}
           <Box
             sx={{

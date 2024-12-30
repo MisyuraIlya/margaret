@@ -1,9 +1,5 @@
 import axios from 'axios'
 
-interface GetCategoriesAttribute extends Hydra {
-  'hydra:member': IAttributeMain[]
-}
-
 interface GetProductPopUpData {
   status: string
   data: ProductPopUp
@@ -20,7 +16,7 @@ export const CatalogServices = {
     user?: IUser,
     mode?: IDocumentType
   ): Promise<GetCatalogResponse> {
-    let url = `${process.env.REACT_APP_API}/api/catalog/${documentType}/${lvl1}/${lvl2}/${lvl3}${searchParams}`
+    let url = `${process.env.REACT_APP_API}/catalog/${documentType}/${lvl1}/${lvl2}/${lvl3}${searchParams}`
     if (user) {
       url += `&userId=${user.id}`
     }
@@ -66,19 +62,6 @@ export const CatalogServices = {
   ): Promise<GetCategoriesResponse> {
     const response = await axios.get(
       `${process.env.REACT_APP_API}/api/categoriesAppDynamic/${lvl1}/${lvl2}/${lvl3}`
-    )
-    return response.data
-  },
-
-  async GetAttributes(
-    lvl1: string | number,
-    lvl2: string | number,
-    lvl3: string | number,
-    searchValue: string,
-    userExId: string
-  ): Promise<GetCategoriesAttribute> {
-    const response = await axios.get(
-      `${process.env.REACT_APP_API}/api/attribute/${lvl1}/${lvl2}/${lvl3}?userExtId=${userExId}&search=${searchValue}`
     )
     return response.data
   },

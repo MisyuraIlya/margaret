@@ -101,7 +101,8 @@ interface ProductDocument {
 type CatalogDocumentType = 'catalog' | 'search' | 'special' | 'new'
 
 interface GetCatalogResponse extends Hydra {
-  'hydra:member': IProduct[] // Define a more specific type if possible
+  'hydra:member': IProduct[] 
+  'hydra:filter': IAttributeMain[]
 }
 
 interface GetCategoriesResponse extends Hydra {
