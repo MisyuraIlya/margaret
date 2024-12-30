@@ -228,7 +228,7 @@ const MobileFilterWithAttributes = () => {
                   padding: '16px',
                 }}
               >
-                <Box>Filters</Box>
+                <Box>סננים</Box>
                 <IconButton onClick={() => setOpenDrawer(false)}>
                   <CloseIcon />
                 </IconButton>
