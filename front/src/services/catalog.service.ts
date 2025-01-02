@@ -16,15 +16,24 @@ export const CatalogServices = {
     user?: IUser,
     mode?: IDocumentType
   ): Promise<GetCatalogResponse> {
-    let url = `${process.env.REACT_APP_API}/catalog/${documentType}/${lvl1}/${lvl2}/${lvl3}${searchParams}`
-    if (user) {
-      url += `&userId=${user.id}`
+    let url = `${process.env.REACT_APP_API}/catalog/${documentType}/${lvl1}/${lvl2}/${lvl3}${searchParams}`;
+    
+    // Handle adding userId and mode query parameters
+    if (user || mode) {
+      const separator = searchParams ? '&' : '?'; // Decide whether to use '&' or '?' based on the presence of searchParams
+      
+      if (user) {
+        url += `${separator}userId=${user.id}`;
+      }
+      
+      if (mode) {
+        url += `${separator}mode=${mode}`;
+      }
     }
-    if (mode) {
-      url += `&mode=${mode}`
-    }
-    const response = await axios.get(url)
-    return response.data
+  
+    console.log('url', url);
+    const response = await axios.get(url);
+    return response.data;
   },
 
   async GetCategories(
