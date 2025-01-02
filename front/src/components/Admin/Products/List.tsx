@@ -80,10 +80,10 @@ const List = () => {
                       <Typography variant="subtitle2">כותרת מוצר</Typography>
                     </TableCell>
                     <TableCell className="col-cont sticky-col">
-                      <Typography variant="subtitle2">חדש?</Typography>
+                      <Typography variant="subtitle2">מוצרים חדשים</Typography>
                     </TableCell>
                     <TableCell className="col-cont sticky-col">
-                      <Typography variant="subtitle2">נמכר ביותר?</Typography>
+                      <Typography variant="subtitle2">מוצרים מיוחדים</Typography>
                     </TableCell>
                     <TableCell className="col-cont sticky-col">
                       <Typography variant="subtitle2">סטטוס</Typography>

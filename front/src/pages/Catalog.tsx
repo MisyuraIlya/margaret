@@ -22,9 +22,9 @@ const Catalog = () => {
     if(documentType === 'catalog') {
       return 'קטלוג'
     } else if(documentType === 'notBuy') {
-      return 'מוצרים שאני לא קונה'
+      return 'מוצרים שאחרים קונים'
     } else if(documentType === 'imBuy') {
-      return 'מוצרים שאני קונה'
+      return 'מוצרים שקניתי בעבר'
     } else if(documentType === 'search') {
       return 'חיפוש'
     } else if(documentType === 'special') {

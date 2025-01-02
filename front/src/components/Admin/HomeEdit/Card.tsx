@@ -95,7 +95,7 @@ const Card: FC<CardProps> = ({ element }) => {
   return (
     <>
       <TableCell>
-        <Typography variant="body1">{element.type}</Typography>
+        <Typography variant="body1">{element.title}</Typography>
       </TableCell>
       <TableCell>
         <Typography variant="body1">{element.orden}</Typography>

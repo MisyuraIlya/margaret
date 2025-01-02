@@ -1,11 +1,12 @@
 import React from 'react'
 import { useAuth } from '../store/auth.store'
-import { Box, Container } from '@mui/material'
+import { Box, Button, Container } from '@mui/material'
 import Home from '../components/Home'
 import hooks from '../hooks'
 import useSWR from 'swr'
 import services from '../services'
 import { useAuthProvider } from '../provider/AuthProvider'
+import { Link } from 'react-router-dom'
 
 const fetchData = async () => {
   return await services.Admin.AdminHomeEditService.getHomeEdits()
@@ -64,14 +65,27 @@ const HomePage = () => {
                       toShow={element.count}
                       toShowMobile={element.countMobile}
                     />
+                    <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', mt:'50px'}}>
+                      <Link to="/client/catalog/0/0/0?page=1">
+                        <Button
+                          variant="contained"
+                          sx={{ padding: '12px 20px' }}
+                          color="secondary"
+                        >
+                          לקטלוג המלא
+                        </Button>
+                      </Link>
+                    </Box>
                   </Box>
                 )}
+      
                 {element.type === 'productsNew' && element.isActive && (
                   <Box>
-                    {specialCatalog?.['hydra:member'] && (
+
+                    {newCatalog?.['hydra:member'] && (
                       <Home.Products
                         title={'מוצרים חדשים'}
-                        array={specialCatalog?.['hydra:member']}
+                        array={newCatalog['hydra:member'].slice(0, 10)}
                         toShow={element.count}
                         toShowInMobile={element.countMobile}
                         column={1}
@@ -83,10 +97,10 @@ const HomePage = () => {
                 )}
                 {element.type === 'productsSale' && element.isActive && (
                   <Box sx={{ marginTop: '60px' }}>
-                  {newCatalog?.['hydra:member'] && (
+                  {specialCatalog?.['hydra:member'] && (
                     <Home.Products
                       title={'מוצרים מיוחדים'}
-                      array={newCatalog['hydra:member'].slice(0, 10)} 
+                      array={specialCatalog?.['hydra:member']} 
                       toShow={element.count}
                       toShowInMobile={element.countMobile}
                       column={1}

@@ -82,17 +82,7 @@ const Video: FC<VideoProps> = ({ isVideo, src }) => {
             {settings?.description}
           </Typography>
         </Box>
-        {isAuthrized && (
-          <Link to="/client/catalog/0/0/0?page=1">
-            <Button
-              variant="contained"
-              sx={{ padding: '12px 20px' }}
-              color="secondary"
-            >
-              לקטלוג המלא
-            </Button>
-          </Link>
-        )}
+
       </Box>
     </Box>
   )

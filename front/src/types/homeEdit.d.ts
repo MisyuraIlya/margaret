@@ -2,6 +2,7 @@ interface IHomeEdit {
   '@id': string
   id: number
   type: string
+  title: string
   orden: number
   isVideo: boolean
   isBanner: boolean

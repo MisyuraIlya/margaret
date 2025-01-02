@@ -48,12 +48,12 @@ const clientURL = {
   },
   PRODUCTS_IM_BUY: {
     LINK: '/client/imBuy/0/0/0?page=1',
-    LABEL: 'מוצרים שאני קונה',
+    LABEL: 'מוצרים שקניתי בעבר',
     ICON: <ShoppingBasketIcon sx={{ width: '20px' }} />,
   },
   PRODUCTS_IM_NOT_BUY: {
     LINK: '/client/notBuy/0/0/0?page=1',
-    LABEL: 'מוצרים שאני לא קונה',
+    LABEL: 'מוצרים שאחרים קונים',
     ICON: <RemoveShoppingCartIcon sx={{ width: '20px' }} />,
   },
 }
