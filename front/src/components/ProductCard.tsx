@@ -133,6 +133,27 @@ const ProductCard: FC<ProductCardProps> = ({ product, listView = false }) => {
                 {`${product?.packQuantity} יח'`}
               </Typography>
             </Grid>
+            {product?.productAttributes?.map((item) => {
+              console.log('item',item.attributeSub.title)
+              // if(item.attributeSub.attribute.isInProductCard) { //FIX BACKEND
+                return (
+                  <>
+                    <Grid item xs={isMobile ? 3.5 : 2.5}>
+                      <Typography variant="caption" color={themeColors.asphalt}>
+                        {item.attributeSub.attribute.title}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={isMobile ? 3.5 : 9.5}>
+                      <Typography variant="caption" color={themeColors.asphalt}>
+                        {item.attributeSub.title}
+                      </Typography>
+                    </Grid>
+                  </>
+                )
+              // }
+            }
+     
+            )}
           </Grid>
         </Grid>
 

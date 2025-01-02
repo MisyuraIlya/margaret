@@ -10,7 +10,8 @@ export const AdminClinetsService = {
   async getUsers(
     roleType: ROLE_TYPES,
     page: string | number,
-    search?: string
+    search?: string,
+    isRegistered?: string
   ): Promise<UsersResponse> {
     let isAgent = false
     if (roleType == 'ROLE_SUPER_AGENT' || roleType === 'ROLE_AGENT')
@@ -21,6 +22,9 @@ export const AdminClinetsService = {
     }
     if (search) {
       url += `&search=${search}`
+    }
+    if(isRegistered){
+      url += `&isRegistered=${isRegistered}`
     }
 
     const response = await axios.get(url)

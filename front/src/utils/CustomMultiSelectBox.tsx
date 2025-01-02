@@ -4,6 +4,7 @@ import React, { FC } from 'react';
 type Option = {
   value: string;
   label: string;
+  count?: number;
 };
 
 interface CustomMultiSelectBoxProps {
@@ -58,7 +59,7 @@ const CustomMultiSelectBox: FC<CustomMultiSelectBoxProps> = ({
       {options.map((option) => (
         <MenuItem key={option.value} value={option.value}>
           <Checkbox checked={values.indexOf(option.value) > -1} />
-          <ListItemText primary={option.label} />
+          <ListItemText primary={`${option.label} (${option?.count})`} />
         </MenuItem>
       ))}
     </Select>

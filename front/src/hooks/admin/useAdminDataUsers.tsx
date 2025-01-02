@@ -6,12 +6,14 @@ import services from '../../services'
 const fetchData = async (
   userRole: ROLE_TYPES,
   page: string,
-  search: string
+  search: string,
+  isRegistered: string
 ) => {
   return await services.Admin.AdminClinetsService.getUsers(
     userRole,
     page,
-    search
+    search,
+    isRegistered
   )
 }
 
@@ -24,11 +26,11 @@ const useDataUsers = () => {
   const urlSearchParams = new URLSearchParams(location.search)
   const page = urlSearchParams.get('page')
   const search = urlSearchParams.get('search')
-  console.log('search',search)
+  const isRegistered = urlSearchParams.get('isRegistered')
   const { userRole } = useParams<RouteParams>()
   const { data, error, isLoading, isValidating, mutate } = useSWR(
-    `api/${userRole}?page=${page}&${search}`,
-    () => fetchData(userRole!, page!, search!)
+    `api/${userRole}?page=${page}&${search}&${isRegistered}`,
+    () => fetchData(userRole!, page!, search!,isRegistered!)
   )
 
   let hydraPagination

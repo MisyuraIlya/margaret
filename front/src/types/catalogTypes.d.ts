@@ -17,7 +17,7 @@ interface IProduct {
   packQuantity: number
   discount: number
   ordern: number
-  productAttributes: ISubAttributes[]
+  productAttributes: IProductAttributes[]
   packProducts: packProducts[]
   link: string
   linkTitle: string
@@ -70,9 +70,15 @@ interface IAttributeMain {
   SubAttributes: ISubAttributes[]
 }
 
+interface IProductAttributes {
+  attributeSub:ISubAttributes
+}
+
 interface ISubAttributes {
   id: number
   title: string
+  productCount: number
+  attribute: IAttributeMain
 }
 
 interface PurchaseHistoryItem {

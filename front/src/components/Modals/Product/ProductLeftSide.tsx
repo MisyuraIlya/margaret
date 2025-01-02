@@ -108,6 +108,22 @@ const ProductLeftSide = () => {
           </Grid>
         </Grid>
       )}
+      {selectedProd?.productAttributes?.map((item) => {
+          return (
+            <Grid container>
+              <Grid item xs={4}>
+                <Typography variant="body1" sx={{ color: themeColors.asphalt }}>
+                  {item.attributeSub.attribute.title}
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <Typography variant="body1" sx={{ color: themeColors.asphalt }}>
+                  {item.attributeSub.title}
+                </Typography>
+              </Grid>
+            </Grid>
+          )
+      })}
       {user && (
         <>
           {selectedMode.value !== 'quote' && (

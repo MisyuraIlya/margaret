@@ -6,9 +6,10 @@ import services from '../../services'
 const fetchData = async (
   agentId: string,
   page: string = '1',
-  search: string
+  search: string,
+  status: string,
 ) => {
-  return await services.Agents.agentService.getClients(agentId, page, search)
+  return await services.Agents.agentService.getClients(agentId, page, search,status)
 }
 
 type RouteParams = {
@@ -20,11 +21,12 @@ const useDataAgentClients = () => {
   const urlSearchParams = new URLSearchParams(location.search)
   const page = urlSearchParams.get('page')
   const search = urlSearchParams.get('search')
+  const status = urlSearchParams.get('status')
   const { agentId } = useParams<RouteParams>()
 
   const { data, error, isLoading, isValidating, mutate } = useSWR(
-    `api/agentClients/${agentId}?page=${page}&${search}`,
-    () => fetchData(agentId!, page!, search!)
+    `api/agentClients/${agentId}?page=${page}&${search}&${status}`,
+    () => fetchData(agentId!, page!, search!,status!)
   )
   let hydraPagination
   if (data) {

@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Utils from '../../../utils'
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, Select, MenuItem, SelectChangeEvent } from '@mui/material'
 import { themeColors } from '../../../styles/mui'
 import { useAdminStore } from '../../../store/admin.store'
 import hooks from '../../../hooks'
@@ -12,17 +12,33 @@ type RouteParams = {
 
 const Filter = () => {
   const { searchClients, setSearchClients } = useAdminStore()
+  const [status, setStatus] = useState<string>('') 
   const navigate = useNavigate()
   const { data } = hooks.admin.useDataUsers()
   const { userRole } = useParams<RouteParams>()
 
-  const handleDebouce = (value: string) => {
+  const handleDebounce = (value: string) => {
     const urlSearchParams = new URLSearchParams(location.search)
     urlSearchParams.set('search', value)
+    if (status) {
+      urlSearchParams.set('status', status)
+    }
     const url = urlSearchParams.toString()
     navigate(`/admin/${userRole}?${url}`)
   }
+
+  const handleStatusChange = (event: SelectChangeEvent<string>) => { 
+    const newStatus = event.target.value
+    setStatus(newStatus)
+    const urlSearchParams = new URLSearchParams(location.search)
+    urlSearchParams.set('search', searchClients) 
+    urlSearchParams.set('isRegistered', newStatus)
+    const url = urlSearchParams.toString()
+    navigate(`/admin/${userRole}?${url}`)
+  }
+
   const total = data?.['hydra:totalItems'] ?? 0
+
   return (
     <Box
       sx={{
@@ -40,13 +56,23 @@ const Filter = () => {
           {'נמצאו: ' + total + ' לקוחות'}
         </Typography>
       </Box>
-      <Box>
+      <Box sx={{ display: 'flex', gap: '10px' }}>
         <Utils.SearchInput
-          handleFunction={handleDebouce}
+          handleFunction={handleDebounce}
           value={searchClients}
           setValue={setSearchClients}
           placeholder="חיפוש לפי שם לקוח או מספר לקוח"
         />
+        <Select
+          value={status}
+          onChange={handleStatusChange} 
+          displayEmpty
+          sx={{ height: '40px' }}
+        >
+          <MenuItem value="">פעילים / לא פעילים</MenuItem>
+          <MenuItem value="true">פעילים</MenuItem>
+          <MenuItem value="false">לא פעילים</MenuItem>
+        </Select>
       </Box>
     </Box>
   )

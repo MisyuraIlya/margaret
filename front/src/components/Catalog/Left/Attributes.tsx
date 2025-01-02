@@ -51,7 +51,7 @@ const Attributes = () => {
     values.forEach((value) => updatedParams.append(`filter[${id}]`, value));
     setSearchParams(updatedParams);
   };
-
+  console.log('filters',filters)
   return (
     <Box sx={{display:'flex'}}>
       {filters.map((item) => (
@@ -64,6 +64,7 @@ const Attributes = () => {
             options={item.SubAttributes?.map((subItem) => ({
                 value: subItem.id.toString(),
                 label: subItem.title,
+                count: subItem.productCount
             })) || []}
             />
         </Box>
