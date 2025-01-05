@@ -13,6 +13,7 @@ import LocationCityIcon from '@mui/icons-material/LocationCity';
 import BusinessIcon from '@mui/icons-material/Business';
 import useDataMoney from '../../hooks/useDataMoney'
 import { numberWithCommas } from '../../helpers/numberWithCommas'
+import HouseIcon from '@mui/icons-material/House';
 
 const Info = () => {
   const { user, logOut } = useAuth()
@@ -157,6 +158,17 @@ const Info = () => {
             </Box>
             <Typography variant="subtitle2" sx={{ pt: '8px' }} color={'error'}>
               {money?.openDeibt ? '₪' + numberWithCommas(money?.openDeibt) : '-'}
+            </Typography>
+          </Grid>
+          <Grid item sm={2} xs={6}>
+            <Box sx={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+              <HouseIcon sx={{ color: themeColors.asphalt }} />
+              <Typography variant="body1" sx={{ color: themeColors.asphalt }}>
+                {'טריטוריה'}
+              </Typography>
+            </Box>
+            <Typography variant="subtitle2" sx={{ pt: '8px' }}>
+              {user?.territoryDescription ?? '-'}
             </Typography>
           </Grid>
         </Grid>

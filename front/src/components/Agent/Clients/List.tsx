@@ -59,6 +59,7 @@ const List = () => {
               <TableCell className="col-cont">יתרת חוב</TableCell>
               <TableCell className="col-cont">כתובת</TableCell>
               <TableCell className="col-cont">עיר</TableCell>
+              <TableCell className="col-cont">טריטוריה</TableCell>
               <TableCell className="col-cont">סטאטוס</TableCell>
               <TableCell className="col-cont">מחזור</TableCell>
             </TableRow>

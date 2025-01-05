@@ -46,7 +46,7 @@ const List = () => {
               <TableCell>מוצר</TableCell>
               <TableCell sx={{ minWidth: '150px' }}></TableCell>
               <TableCell>כמות</TableCell>
-              <TableCell>מחיר יח'</TableCell>
+              <TableCell>מחיר לקטרון</TableCell>
               <TableCell>הנחה</TableCell>
               <TableCell>סה״כ</TableCell>
             </TableRow>

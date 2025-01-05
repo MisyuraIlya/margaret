@@ -135,7 +135,7 @@ const ProductLeftSide = () => {
                     variant="body1"
                     sx={{ color: themeColors.asphalt }}
                   >
-                    {"מחיר יח'"}
+                    {"מחיר לקטרון"}
                   </Typography>
                 </Grid>
                 <Grid
@@ -150,7 +150,7 @@ const ProductLeftSide = () => {
                           inCart?.product.finalPrice ?? selectedProd.finalPrice
                         }
                         onChange={(e) => handleChangePrice(+e.target.value)}
-                        placeholder="מחיר יח'"
+                        placeholder="מחיר לקטרון"
                         sx={{
                           '& input': {
                             width: '70px',
@@ -265,7 +265,7 @@ const ProductLeftSide = () => {
                     variant="body1"
                     sx={{ color: themeColors.asphalt }}
                   >
-                    {"יח' להזמנה"}
+                    {"קרטון להזמנה"}
                   </Typography>
                 </Grid>
                 <Grid

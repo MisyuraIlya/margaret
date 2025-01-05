@@ -29,6 +29,8 @@ interface IUser {
   isAgent: boolean
   city: string 
   address: string
+  territoryCode: string
+  territoryDescription: string
 }
 
 interface IAtarim {

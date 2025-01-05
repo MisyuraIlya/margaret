@@ -11,7 +11,8 @@ export const AdminClinetsService = {
     roleType: ROLE_TYPES,
     page: string | number,
     search?: string,
-    isRegistered?: string
+    isRegistered?: string,
+    territoryCode?: string
   ): Promise<UsersResponse> {
     let isAgent = false
     if (roleType == 'ROLE_SUPER_AGENT' || roleType === 'ROLE_AGENT')
@@ -25,6 +26,9 @@ export const AdminClinetsService = {
     }
     if(isRegistered){
       url += `&isRegistered=${isRegistered}`
+    }
+    if(territoryCode){
+      url += `&territoryCode=${territoryCode}`
     }
 
     const response = await axios.get(url)

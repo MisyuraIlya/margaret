@@ -48,7 +48,7 @@ const clientURL = {
   },
   PRODUCTS_IM_BUY: {
     LINK: '/client/imBuy/0/0/0?page=1',
-    LABEL: 'מוצרים שקניתי בעבר',
+    LABEL: 'סל קבוע',
     ICON: <ShoppingBasketIcon sx={{ width: '20px' }} />,
   },
   PRODUCTS_IM_NOT_BUY: {
@@ -136,7 +136,9 @@ const MenuProfile: FC<MenuProfile> = ({ handleClose }) => {
           <Typography variant={isMobile ? 'h6' : 'h5'}>
             {user?.name}
           </Typography>
-          <Typography variant="caption">{(user ?? agent)?.extId}</Typography>
+          {user?.role === 'ROLE_USER' &&
+            <Typography variant="caption">{user?.extId}</Typography>
+          }
         </Box>
         { user?.role === 'ROLE_USER' 
         ? <Chip label="לקוח" variant="outlined" color="info" />

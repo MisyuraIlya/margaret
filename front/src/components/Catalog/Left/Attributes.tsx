@@ -10,7 +10,6 @@ const Attributes = () => {
   const [localSelectedValues, setLocalSelectedValues] = useState<Record<string, string[]>>({});
   const [filters, setFilters] = useState<IAttributeMain[]>([]);
 
-  // Sync filters from data
   useEffect(() => {
     if (data?.['hydra:filter']) {
       setFilters((prevFilters) => {
@@ -27,7 +26,6 @@ const Attributes = () => {
     }
   }, [data]);
 
-  // Sync local state with URL query params
   useEffect(() => {
     const initialValues: Record<string, string[]> = {};
     filters.forEach((item) => {
@@ -45,13 +43,11 @@ const Attributes = () => {
       [id]: values,
     }));
 
-    // Update search params
     const updatedParams = new URLSearchParams(searchParams.toString());
     updatedParams.delete(`filter[${id}]`);
     values.forEach((value) => updatedParams.append(`filter[${id}]`, value));
     setSearchParams(updatedParams);
   };
-  console.log('filters',filters)
   return (
     <Box sx={{display:'flex'}}>
       {filters.map((item) => (

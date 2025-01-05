@@ -9,7 +9,8 @@ export const agentService = {
     agentId: string,
     page: string | number = '1',
     search?: string,
-    status?: string
+    status?: string,
+    territory?: string
   ): Promise<agentServiceResponse> {
     console.log('page', page)
     let apiUrl = `${process.env.REACT_APP_API}/api/agentClients/${agentId}?page=${page}`
@@ -20,6 +21,10 @@ export const agentService = {
 
     if(status){
       apiUrl += `&status=${status}`
+    }
+
+    if(territory){
+      apiUrl += `&territory=${territory}`
     }
 
     const response = await axios.get(apiUrl)

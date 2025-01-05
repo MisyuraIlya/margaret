@@ -130,11 +130,10 @@ const ProductCard: FC<ProductCardProps> = ({ product, listView = false }) => {
             </Grid>
             <Grid item xs={isMobile ? 3.5 : 9.5}>
               <Typography variant="caption" color={themeColors.asphalt}>
-                {`${product?.packQuantity} יח'`}
+                {`${product?.packQuantity} קרטון`}
               </Typography>
             </Grid>
             {product?.productAttributes?.map((item) => {
-              console.log('item',item.attributeSub.title)
               // if(item.attributeSub.attribute.isInProductCard) { //FIX BACKEND
                 return (
                   <>
@@ -151,9 +150,7 @@ const ProductCard: FC<ProductCardProps> = ({ product, listView = false }) => {
                   </>
                 )
               // }
-            }
-     
-            )}
+            })}
           </Grid>
         </Grid>
 
@@ -206,7 +203,7 @@ const ProductCard: FC<ProductCardProps> = ({ product, listView = false }) => {
                           )}
                       </Box>
                       <Typography variant="caption" color={themeColors.asphalt}>
-                        {`מחיר יח'`}
+                        {`מחיר לקטרון`}
                       </Typography>
                       <Divider sx={{ margin: '10px 0' }} />
                       <Box
@@ -235,7 +232,7 @@ const ProductCard: FC<ProductCardProps> = ({ product, listView = false }) => {
                         >
                           {`סה״כ להזמנה ל- `}
                           {inCart?.quantity}
-                          {" יח'"}
+                          {" קרטון"}
                         </Typography>
                       </Box>
                     </Box>

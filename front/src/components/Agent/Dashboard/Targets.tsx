@@ -78,12 +78,13 @@ const Targets = () => {
       showForSingleSeries: true,
       customLegendItems: ['מכירות', 'יעד'],
       markers: {
-        fillColors: ['#FFAD0D', '#6F3FF5'],
+        fillColors: ['#FFAD0D', themeColors.primary],
       },
       fill: {
-        colors: ['#FFAD0D', '#6F3FF5'],
+        colors: ['#FFAD0D', themeColors.primary]
       },
     },
+
   }
   const optionsDesktop = {
     chart: {
@@ -105,11 +106,19 @@ const Targets = () => {
       showForSingleSeries: true,
       customLegendItems: ['מכירות', 'יעד'],
       markers: {
-        fillColors: ['#FFAD0D', '#6F3FF5'],
+        fillColors: ['#FFAD0D', themeColors.primary],
       },
     },
     fill: {
-      colors: ['#FFAD0D', '#6F3FF5'],
+      colors: ['#FFAD0D', themeColors.primary]
+    },
+    yaxis: {
+      labels: {
+        offsetX: -40, 
+        style: {
+          fontSize: '12px',
+        },
+      },
     },
   }
   return (

@@ -134,9 +134,10 @@ const Categories: FC<CategoriesProps> = ({ toShow, toShowMobile }) => {
                     </Box>
                     <CardContent
                       sx={{
-                        backgroundColor: themeColors.primary,
+                        backgroundColor: `${themeColors.primary}CC`, // Add transparency with the 'CC' suffix
                         color: 'white',
                         padding: '6px 12px',
+                        backdropFilter: 'blur(120px)', // Adjust the blur value as needed
                       }}
                     >
                       <Typography gutterBottom variant="h6">

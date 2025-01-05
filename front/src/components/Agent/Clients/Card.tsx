@@ -87,6 +87,9 @@ const Card: FC<ICardProps> = ({ element }) => {
                 <Typography variant="body2">{element?.city}</Typography>
             </TableCell>
             <TableCell>
+                <Typography variant="body2">{element?.territoryDescription}</Typography>
+            </TableCell>
+            <TableCell>
                 <Typography variant="body2">{UserStatus(element)}</Typography>
             </TableCell>
             <TableCell sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

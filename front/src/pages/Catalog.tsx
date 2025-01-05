@@ -24,7 +24,7 @@ const Catalog = () => {
     } else if(documentType === 'notBuy') {
       return 'מוצרים שאחרים קונים'
     } else if(documentType === 'imBuy') {
-      return 'מוצרים שקניתי בעבר'
+      return 'סל קבוע'
     } else if(documentType === 'search') {
       return 'חיפוש'
     } else if(documentType === 'special') {

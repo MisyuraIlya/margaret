@@ -15,9 +15,9 @@ export const DocumentsService = {
   ): Promise<DocumentsResponse> {
     const fromConverted = moment(fromDate).format('YYYY-MM-DD')
     const toDateConverted = moment(toDate).format('YYYY-MM-DD')
-
+    documentType = documentType.trim()
     let url = `${process.env.REACT_APP_API}/api/documents/${documentType}/${fromConverted}/${toDateConverted}?page=${page}`
-    console.log('user', user)
+    console.log(url)
     if (
       user.role === 'ROLE_USER' ||
       user.role === 'ROLE_AGENT' ||
@@ -34,6 +34,7 @@ export const DocumentsService = {
     documentNumber: number | string,
     user?: IUser
   ): Promise<IDocumentItems> {
+    console.log('documentItemType',documentItemType)
     let apiUrl = `${process.env.REACT_APP_API}/api/documentItems/${documentItemType}/${documentNumber}`
     if (user) {
       apiUrl += `?userExId=${user.id}`
